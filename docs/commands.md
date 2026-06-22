@@ -35,6 +35,7 @@ Most scripts accept:
 | **Model a pooled-quota design** (subscription Reader only) | `Get-QuotaGroupPlan.ps1 [-HeadroomFactor 1.3]` | `quota-group-plan-…csv` (pooled used/limit/free + stranded headroom + suggested pool) + `…-members-…csv` (per-sub posture) |
 | Watch for an enablement to land | `Watch-SkuEnablement.ps1 -SubscriptionIds … -Sku … [-WatchResourceIds <aksId>]` | rolling CSV log + error alerts |
 | Render a visual HTML dashboard | `New-CapacityDashboard.ps1 [-Location <r>] [-SecondaryRegion <r>]` | self-contained `capacity-dashboard-…html` |
+| **Try it offline — generate synthetic demo data** (no Azure access) | `New-DemoDataset.ps1 [-OutDir <path>] [-Company <name>] [-Seed <int>]` | a full set of fictional CSVs you can render with the dashboard |
 | Produce a full status report | `New-CapacityReport.ps1 [-ConfigPath capacity-config.json] -Location <r> [-SecondaryRegion <r> -IncludeAks -IncludeZonal -IncludeCatalogue -IncludeInventory -IncludeQuotaGroups -Dashboard -EnablementRequest -EvaluateRegions <list>]` | combined CSV + Markdown (+ HTML / request / region compare / zonal resilience / full SKU catalogue / inventory / quota groups) |
 
 ## The orchestrator: `New-CapacityReport.ps1`
@@ -112,3 +113,37 @@ az monitor activity-log list --resource-id <RESOURCE_ID> --start-time 2026-06-19
 ```
 
 See [Troubleshooting & FAQ](troubleshooting.md) for the gotchas behind several of these.
+
+## Preview the dashboard offline (synthetic demo data)
+
+Want to see what the dashboard looks like without an Azure tenant, login, or any real data?
+`New-DemoDataset.ps1` generates a complete, self-consistent **fictional** dataset (default
+company "Zava Inc") from a deterministic seed — it reads nothing from Azure and produces the
+same CSV schemas the collector scripts do.
+
+```powershell
+# 1) Generate the demo CSVs (default -> output/)
+.\scripts\New-DemoDataset.ps1 -OutDir .\demo-output
+
+# 2) Render the dashboard from them (no az login needed)
+.\scripts\New-CapacityDashboard.ps1 -InputDir .\demo-output `
+  -Location norwayeast -SecondaryRegion swedencentral `
+  -Title "Zava Inc - Azure Capacity & Enablement" -OutPath .\demo-dashboard.html
+```
+
+The generated universe deliberately exercises a range of dashboard states: SKU enablement
+blocks and availability-zone gaps, near-capacity quota (general-purpose + burstable families),
+a GPU capacity crunch (NCads H100 v5), a regional vCPU ceiling under pressure, one actively
+pooled quota group and one that is not, AKS clusters in `Failed` / `Upgrading` / `Canceled`
+states, and zone-redundant HA flexible servers alongside single-zone ones.
+
+| Parameter | Purpose |
+|---|---|
+| `-OutDir <path>` | Where to write the CSVs (default `output/`). |
+| `-Company <name>` | Fictional company display name (default `Zava Inc`). |
+| `-Prefix <token>` | Short token used in resource/subscription names (default `Zava`). |
+| `-Location` / `-SecondaryRegion` | Primary / comparison regions to populate. |
+| `-Seed <int>` | Reproducibility seed — same seed produces identical files. |
+
+Because the data is invented, it is safe to commit, screenshot or share. (Real `output/` data is
+git-ignored.)
