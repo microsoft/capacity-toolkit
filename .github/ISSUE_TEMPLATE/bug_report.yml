@@ -1,0 +1,86 @@
+name: 🐛 Bug report
+description: Report something in the toolkit that isn't working as documented.
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug.
+
+        > ⚠️ **Do not paste live tenant data.** Redact subscription/tenant IDs, subscription
+        > names, resource names and any output from `output/` before attaching logs or
+        > screenshots. Use placeholders such as `00000000-0000-0000-0000-000000000001`.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Pre-flight checks
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: I removed all tenant data (IDs, names, output) from anything I attach below.
+          required: true
+        - label: I am running a read-only command — this is not a request to add a write/mutating feature.
+          required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and how it differs from the documented behaviour.
+    validations:
+      required: true
+  - type: input
+    id: command
+    attributes:
+      label: Script / command
+      description: Which script and arguments did you run? (redact values)
+      placeholder: .\New-CapacityReport.ps1 -Location norwayeast -SecondaryRegion swedencentral
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run ...
+        2. Open ...
+        3. See error ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual result
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant output / error (redacted)
+      description: Paste the error text or console output. This is automatically formatted as code.
+      render: shell
+  - type: input
+    id: ps-version
+    attributes:
+      label: PowerShell version
+      description: Output of `$PSVersionTable.PSVersion`
+      placeholder: "5.1.19041.x  (or 7.4.x)"
+    validations:
+      required: true
+  - type: input
+    id: az-version
+    attributes:
+      label: Azure CLI version
+      description: Output of `az version --query '"azure-cli"'`
+      placeholder: "2.x.x"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true

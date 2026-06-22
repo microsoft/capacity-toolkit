@@ -1,0 +1,22 @@
+# Live tenant data — NEVER commit. Only the placeholder README is tracked.
+output/*
+!output/README.md
+
+# Generated capacity config (may contain real subscription IDs)
+capacity-config.json
+**/capacity-config.json
+
+# Internal-only material must never live in this public repo.
+INTERNAL-PLAYBOOK.md
+*-INTERNAL.md
+internal/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+
+# Node tooling for branding asset generation (regenerate with `npm install`)
+node_modules/
+assets/branding/node_modules/

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Question or usage help
+    url: https://github.com/microsoft/capacity-toolkit/discussions
+    about: Ask and answer how-to questions in Discussions (update this link to your repo).
+  - name: 🔒 Security vulnerability
+    url: https://aka.ms/opensource/security/create-report
+    about: Report security issues privately to the Microsoft Security Response Center — never in a public issue.

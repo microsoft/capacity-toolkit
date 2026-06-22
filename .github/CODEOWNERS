@@ -1,0 +1,15 @@
+# Code owners for the Azure Capacity & Enablement Toolkit.
+#
+# Every pull request requires review from an internal maintainer team below.
+# External contributors propose changes via fork + PR; they are never code owners
+# and cannot satisfy this requirement. Combine with branch protection
+# ("Require review from Code Owners") to make this binding.
+
+*           @microsoft/capacity-toolkit-contrib @microsoft/capacity-toolkit-board
+
+# Governance / release-sensitive files: board sign-off.
+/LICENSE                @microsoft/capacity-toolkit-board
+/SECURITY.md            @microsoft/capacity-toolkit-board
+/CODE_OF_CONDUCT.md     @microsoft/capacity-toolkit-board
+/CONTRIBUTING.md        @microsoft/capacity-toolkit-board
+/.github/               @microsoft/capacity-toolkit-board

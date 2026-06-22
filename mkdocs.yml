@@ -1,0 +1,48 @@
+site_name: Azure Capacity & Enablement Toolkit
+site_description: >-
+  Read-only tools and a self-contained dashboard to analyze Azure regional capacity,
+  availability-zone enablement, and quota — with only Reader access.
+docs_dir: docs
+
+theme:
+  name: material
+  logo: assets/logo.svg
+  favicon: assets/logo.png
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: light blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - content.code.copy
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Concepts: concepts.md
+  - Commands reference: commands.md
+  - Dashboard guide: dashboard.md
+  - Troubleshooting & FAQ: troubleshooting.md
+  - Sharing & security: sharing-and-security.md

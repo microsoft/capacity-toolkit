@@ -1,0 +1,58 @@
+name: 💡 Feature request
+description: Suggest a new capability or improvement for the toolkit.
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement. Please keep proposals aligned with the
+        toolkit's core principles below.
+  - type: checkboxes
+    id: principles
+    attributes:
+      label: Alignment with toolkit principles
+      description: The toolkit is read-only, dependency-light and ships no telemetry.
+      options:
+        - label: This stays **read-only** — it does not create, modify, delete or otherwise mutate any Azure resource.
+          required: true
+        - label: It works with **Reader** access (plus management-group read for quota-group features).
+          required: true
+        - label: It introduces no telemetry and no data leaving the user's machine.
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: What question can't you answer today, or what is harder than it should be?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should the toolkit do? Which script(s) or dashboard pane would it touch?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - SKU / region enablement
+        - Availability zones
+        - Quota / quota groups
+        - AKS
+        - Databases
+        - Dashboard / reporting
+        - Discovery (used SKUs / inventory)
+        - Documentation
+        - Other
+    validations:
+      required: true

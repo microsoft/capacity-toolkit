@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1118"/><stop offset="1" stop-color="#0d1117"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1117"/><stop offset="1" stop-color="#0c131b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#388bfd"/>
+  <rect x="426.6666666666667" y="0" width="426.6666666666667" height="6" fill="#3fb950"/>
+  <rect x="853.3333333333334" y="0" width="426.6666666666667" height="6" fill="#db6d28"/>
+
+  <rect x="96" y="168" width="304" height="304" rx="63.839999999999996" fill="url(#tile)" stroke="#30363d" stroke-width="2"/><rect x="140.07999999999998" y="386.88" width="215.84000000000003" height="6.688" rx="3.344" fill="#30363d"/><rect x="149.2" y="295.68" width="48.64" height="91.2" rx="10.64" fill="#388bfd"/><rect x="149.2" y="295.68" width="48.64" height="21.28" rx="10.64" fill="#ffffff" opacity="0.18"/><rect x="223.68" y="259.2" width="48.64" height="127.67999999999999" rx="10.64" fill="#3fb950"/><rect x="223.68" y="259.2" width="48.64" height="21.28" rx="10.64" fill="#ffffff" opacity="0.18"/><rect x="298.15999999999997" y="222.71999999999997" width="48.64" height="164.16000000000003" rx="10.64" fill="#db6d28"/><rect x="298.15999999999997" y="222.71999999999997" width="48.64" height="21.28" rx="10.64" fill="#ffffff" opacity="0.18"/>
+
+  <g font-family="'Segoe UI',Arial,sans-serif">
+    <text x="468" y="262" font-size="62" font-weight="700" fill="#e6edf3">Azure Capacity &amp;</text>
+    <text x="468" y="334" font-size="62" font-weight="700" fill="#e6edf3">Enablement Toolkit</text>
+    <text x="470" y="398" font-size="29" fill="#8b949e">Read-only tools and a self-contained dashboard for Azure</text>
+    <text x="470" y="438" font-size="29" fill="#8b949e">regional capacity, availability-zone enablement, and quota.</text>
+    <g font-size="24" font-weight="600">
+      <rect x="470" y="476" width="190" height="44" rx="22" fill="rgba(56,139,253,.16)" stroke="#388bfd"/>
+      <text x="496" y="505" fill="#79c0ff">Reader-only</text>
+      <rect x="676" y="476" width="172" height="44" rx="22" fill="rgba(63,185,80,.16)" stroke="#3fb950"/>
+      <text x="700" y="505" fill="#56d364">No changes</text>
+      <rect x="864" y="476" width="180" height="44" rx="22" fill="rgba(219,109,40,.16)" stroke="#db6d28"/>
+      <text x="888" y="505" fill="#e3935a">No telemetry</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,24 @@
+name: 📝 Documentation
+description: Report a problem or suggest an improvement in the docs.
+labels: ["documentation", "needs-triage"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Which page or file?
+      placeholder: docs/getting-started.md  /  README.md  /  AGENTS.md
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's wrong or missing?
+      description: Describe the inaccuracy, gap, or confusing section.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested change
+    validations:
+      required: false
