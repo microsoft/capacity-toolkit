@@ -20,6 +20,9 @@ All notable changes to this project are documented here. The format is based on
   pooled group limits with a configurable headroom buffer.
 - Synthetic `examples/quota-groups.sample.json` design and a [Quota Groups rollout](docs/quota-groups.md)
   guide; a "Services & coverage" matrix in the README.
+- **AI & agent governance** section in `AGENTS.md` — states the toolkit runs no AI models and sends
+  no data to any model or third party; the only AI relationship is an agent *operating* it under the
+  file's read-only-by-default guardrails.
 - **Synthetic demo data generator** (`New-DemoDataset.ps1`) — produces a complete,
   self-consistent fictional dataset ("Zava Inc") from a deterministic seed, with no Azure
   access required, so the dashboard can be previewed entirely offline. The generated universe
