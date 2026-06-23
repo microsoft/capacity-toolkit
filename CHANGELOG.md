@@ -26,6 +26,14 @@ All notable changes to this project are documented here. The format is based on
   exercises a range of dashboard states (SKU blocks and zone gaps, near-capacity quota, a GPU
   crunch, a pooled quota group, AKS lifecycle states, zone-redundant HA databases).
 
+### Changed
+
+- **Positioning reframed to "read-only by default."** Docs, badges and templates no longer claim
+  zero mutations now that the opt-in `Deploy-QuotaGroups.ps1` rollout ships: the README badge reads
+  `Mutations: opt-in only`, and AGENTS.md / contributor guidance keep the analysis path strictly
+  read-only while documenting the single opt-in write tool (Validate + `-WhatIf` + confirm before
+  any execute run). No behaviour change to the analysis scripts.
+
 ## [0.1.0] - 2026-06-22
 
 First release.
