@@ -66,15 +66,20 @@ Billing access is only needed to request **new** quota beyond the pooled total.
 
 Takes a **skeleton** config (groups + members + `managementGroupId`, with empty
 `groupLimits`/`allocations`) plus a quota report, and fills in the numbers. It
-**auto-detects** the report format from its columns:
+**auto-detects** the report format from its columns, so you can use whichever quota
+collector you already have:
 
-- **Toolkit-native** — the wide `quota-usage-*.csv` from `Get-QuotaUsage.ps1`. Per-family
-  columns `<short>_used` / `<short>_limit` (e.g. `Bsv2_limit`) are unpivoted back to the
-  Quota API family token `standard<short>family`. The wide CSV has no per-row location, so
-  the region comes from `-Locations` (single region; default `norwayeast`).
-- **External** — the long CSV from
-  [azure-quota-reports](https://github.com/martinopedal/azure-quota-reports) with
-  `Provider` / `QuotaId` / `Limit` / `CurrentUsage` columns.
+- **Toolkit-native (recommended)** — the wide `quota-usage-*.csv` from `Get-QuotaUsage.ps1`.
+  Per-family columns `<short>_used` / `<short>_limit` (e.g. `Bsv2_limit`) are unpivoted back to
+  the Quota API family token `standard<short>family`. The wide CSV has no per-row location, so
+  the region comes from `-Locations` (single region; default `norwayeast`). This keeps everything
+  in one Reader-only ecosystem with no extra dependencies.
+- **External (also supported)** — the long CSV from
+  [azure-quota-reports](https://github.com/martinopedal/azure-quota-reports) by Martin Pedal, with
+  `Provider` / `QuotaId` / `Limit` / `CurrentUsage` columns. Handy if you already run that tool to
+  collect quota across subscriptions; the bridge produces the same result as the toolkit-native
+  path. (It is a third-party community tool — its CSV layout may change over time, independently of
+  this toolkit.)
 
 For each group it computes:
 
