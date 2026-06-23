@@ -30,6 +30,27 @@ and AKS resilience — packaged as generic scripts plus a single, self-contained
 - *Do we have quota groups, how are they designed, and is there pooled headroom?*
 - *Draft me the support request to enable SKU X regionally and in AZ01/AZ02/AZ03.*
 
+## Services & coverage
+
+What the toolkit looks at, and along which dimensions. Everything here is **Reader-only
+analysis** — see the note below for the one optional write tool.
+
+| Service / area | SKU & region | AZ enablement | Quota & headroom | Resilience / HA | Inventory | Key scripts |
+|---|:---:|:---:|:---:|:---:|:---:|---|
+| **Compute — VMs & VM Scale Sets** | ✅ | ✅ | ✅ | ✅ | ✅ | `Get-UsedSkus`, `Scan-SkuEnablement`, `Get-SkuCatalogue`, `Get-QuotaUsage`, `Get-ZoneMappings` |
+| **AKS (managed Kubernetes)** | ✅ | ✅ | ✅¹ | ✅ | ✅ | `Get-AksInventory` |
+| **PostgreSQL / MySQL Flexible Servers** | ✅ | ✅ | — | ✅ | ✅ | `Get-FlexServerZones` |
+| **Quota Groups (pooled vCPU quota)** | — | — | ✅ | — | ✅ | `Get-QuotaGroups`, `Get-QuotaGroupPlan` |
+| **Any zone-pinned resource / region footprint** | — | ✅ | — | ✅ | ✅ | `Get-ZonalResourceInventory`, `Get-ResourceInventory`, `Get-RegionFootprint` |
+
+¹ AKS node pools draw on the same VM-family quota as compute, so quota coverage is via the compute families.
+
+> 🛠️ **One optional write tool.** Beyond analysis, `Deploy-QuotaGroups.ps1` (with the
+> `New-QuotaGroupConfig.ps1` bridge) can *provision* quota groups from a JSON design. It is
+> a deliberately separate, **opt-in** tool: PowerShell 7+, supports `-WhatIf`, is guarded by
+> `ShouldProcess`, and needs elevated quota roles. The rest of the toolkit stays Reader-only.
+> See **[Quota Groups rollout](docs/quota-groups.md)**.
+
 ## 60-second quick start
 
 ```powershell
@@ -61,6 +82,7 @@ Full walkthrough: **[Getting started](docs/getting-started.md)**.
 | [Getting started](docs/getting-started.md) | Prerequisites, access, install, your first run |
 | [Concepts](docs/concepts.md) | Capacity vs quota, regional vs zonal, zone mapping, quota groups, region readiness |
 | [Commands reference](docs/commands.md) | Every script, its parameters and outputs, plus raw `az` one-liners |
+| [Quota Groups rollout](docs/quota-groups.md) | The optional write tool: design + provision pooled quota groups |
 | [Dashboard guide](docs/dashboard.md) | The HTML dashboard tabs and how to read them |
 | [Troubleshooting & FAQ](docs/troubleshooting.md) | Common questions, platform gotchas, best practices |
 | [Sharing & security](docs/sharing-and-security.md) | Read-only guarantees and how to sanitize before sharing |
@@ -70,8 +92,10 @@ Full walkthrough: **[Getting started](docs/getting-started.md)**.
 
 ## Why it's safe to run
 
-- **Read-only.** Every script only reads; nothing is created, modified or deleted. The only writes
-  are local CSV / HTML / JSON files under `output/`.
+- **Read-only by default.** Every analysis script only reads; nothing is created, modified or
+  deleted. The only writes are local CSV / HTML / JSON files under `output/`. The single
+  exception is the opt-in `Deploy-QuotaGroups.ps1` rollout tool, which is clearly separated,
+  supports `-WhatIf`, and is never invoked by the analysis scripts or the dashboard.
 - **Reader access** covers everything except quota-group reads (management-group read) and `kubectl`
   inspection (Cluster User/Admin — out of scope).
 - **No secrets, self-contained output.** It stores no credentials and the dashboard opens offline.
@@ -85,7 +109,8 @@ Azure-Capacity-Enablement-Toolkit/
 ├─ README.md                     ← this file (front door)
 ├─ AGENTS.md                     ← AI-agent guide (read-only guardrails, workflow, interpretation)
 ├─ docs/                         ← full documentation (see the table above)
-├─ scripts/                      ← the read-only PowerShell toolkit (Get-*, Scan-*, New-*)
+├─ scripts/                      ← the PowerShell toolkit (read-only Get-*/Scan-*/New-*, plus the opt-in Deploy-QuotaGroups)
+├─ examples/                     ← sample design files (e.g. synthetic quota-groups.sample.json)
 ├─ output/                       ← generated CSV / Markdown / HTML (git-ignored; placeholder README only)
 ├─ mkdocs.yml                    ← docs-site config
 ├─ CONTRIBUTING.md · SUPPORT.md · SECURITY.md · CODE_OF_CONDUCT.md · LICENSE

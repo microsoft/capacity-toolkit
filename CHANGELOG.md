@@ -8,6 +8,18 @@ All notable changes to this project are documented here. The format is based on
 
 ### Added
 
+- **Quota Group rollout (opt-in write tool)** — `Deploy-QuotaGroups.ps1`, a generic,
+  config-driven, idempotent engine that provisions Azure Quota Groups
+  (`Microsoft.Quota/groupQuotas`) from a JSON design: registers providers, creates groups at
+  a management-group scope, adds members, requests pooled group limits, and allocates quota to
+  subscriptions. Requires PowerShell 7+, supports `-WhatIf`, and is guarded by `ShouldProcess`.
+  This is the toolkit's only write capability and is kept separate from the read-only scans.
+- **Quota Group config bridge** (`New-QuotaGroupConfig.ps1`) — turns a quota report into a
+  deploy-ready design, auto-detecting either the toolkit-native wide `quota-usage` CSV (from
+  `Get-QuotaUsage.ps1`) or an external azure-quota-reports CSV; computes allocations and
+  pooled group limits with a configurable headroom buffer.
+- Synthetic `examples/quota-groups.sample.json` design and a [Quota Groups rollout](docs/quota-groups.md)
+  guide; a "Services & coverage" matrix in the README.
 - **Synthetic demo data generator** (`New-DemoDataset.ps1`) — produces a complete,
   self-consistent fictional dataset ("Zava Inc") from a deterministic seed, with no Azure
   access required, so the dashboard can be previewed entirely offline. The generated universe
