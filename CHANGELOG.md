@@ -8,6 +8,14 @@ All notable changes to this project are documented here. The format is based on
 
 ### Added
 
+- **Capacity Reservation inventory** (`Get-CapacityReservations.ps1`) — a read-only collector that
+  enumerates `Microsoft.Compute/capacityReservationGroups` and their child `capacityReservations`
+  across visible subscriptions (ARM read, api-version `2024-07-01`, `$expand=instanceView`) and reports,
+  per reservation, the SKU, region, zone, reserved instance count, the capacity actually reserved at
+  runtime, how many instances are consuming it, and **idle / over-allocated / at-capacity** flags. This
+  closes the loop on the one construct that *guarantees* capacity (as distinct from quota), which
+  `docs/concepts.md` already teaches. Reader-only; empty and unreadable (shared-scope) groups are
+  surfaced as explicit rows. Resolves #11.
 - **Spot Placement Score lens** (`Get-SpotPlacementScore.ps1`) — a read-only collector that calls the
   Azure Spot Placement Score API (`Microsoft.Compute/locations/.../placementScores/spot/generate`,
   api-version `2025-06-05`) to return an allocation-likelihood signal (`High` / `Medium` / `Low`) per
