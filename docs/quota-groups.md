@@ -1,6 +1,6 @@
 # Quota Groups rollout
 
-Most of this toolkit is **read-only**. This page covers the one **opt-in write**
+Most of this toolkit is **read-only by default**. This page covers the one **opt-in write**
 capability: provisioning **Azure Quota Groups** (`Microsoft.Quota/groupQuotas`) from a
 JSON design file. It is a deliberately separate tool — it requires elevated quota roles,
 supports `-WhatIf`, and is guarded by `ShouldProcess`.

@@ -4,16 +4,19 @@
 </h1>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Access: Reader](https://img.shields.io/badge/Azure-Reader%20only-success.svg)](docs/getting-started.md)
-[![Read-only](https://img.shields.io/badge/Mutations-none-critical.svg)](AGENTS.md)
+[![Access: Reader](https://img.shields.io/badge/Azure-Reader%20for%20analysis-success.svg)](docs/getting-started.md)
+[![Read-only by default](https://img.shields.io/badge/Mutations-opt--in%20only-important.svg)](docs/quota-groups.md)
 
-> Read-only tools and a self-contained dashboard to analyze Azure regional capacity,
-> availability-zone enablement, and quota — with only Reader access.
+> **Read-only by default** — analysis tools and a self-contained dashboard for Azure regional
+> capacity, availability-zone enablement, and quota, runnable with only Reader access; plus one
+> **opt-in** tool to provision quota groups.
 
-A **read-only** toolkit that shows you, in concrete numbers, what is actually enabled in an Azure
-region: which VM SKUs are available regionally and per availability zone, how much quota and
+A **read-only-by-default** toolkit that shows you, in concrete numbers, what is actually enabled in
+an Azure region: which VM SKUs are available regionally and per availability zone, how much quota and
 headroom you have, how each subscription maps to the physical zones, and what your AKS and database
-footprint looks like. It needs nothing more than **Reader** access.
+footprint looks like. The analysis side needs nothing more than **Reader** access; a single
+**opt-in** write tool can provision quota groups when you choose to (see
+[Services & coverage](#services--coverage)).
 
 It covers the questions that come up in a regional-capacity review — constrained VM SKUs,
 regional-vs-zonal enablement gaps, per-subscription zone mapping, quota sizing across quota groups,
@@ -120,8 +123,9 @@ Azure-Capacity-Enablement-Toolkit/
 ## Contributing
 
 Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). For questions and bug reports,
-see [SUPPORT.md](SUPPORT.md). Please keep the toolkit **read-only** and never commit live tenant
-data.
+see [SUPPORT.md](SUPPORT.md). Please keep the toolkit **read-only by default** — new analysis
+features must not mutate Azure resources; the only sanctioned write path is the existing opt-in
+quota-group rollout — and never commit live tenant data.
 
 ## Trademarks
 

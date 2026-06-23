@@ -85,15 +85,19 @@ through the same **fork-and-pull-request** model — nobody pushes directly to t
 
 ## Toolkit conventions
 
-These keep the toolkit safe, generic and read-only:
+These keep the toolkit safe, generic and read-only by default:
 
-- **Read-only by contract.** Scripts may only *read* (`az rest GET`, `az ... list`,
+- **Read-only by default.** Analysis scripts may only *read* (`az rest GET`, `az ... list`,
   Resource Graph, `az vm list-usage`). Never add create/update/delete calls, `New-Az*` /
-  `Set-Az*` / `Remove-Az*`, or anything that mutates a tenant. The only writes are local files
-  under `output/`. See [AGENTS.md](AGENTS.md) for the full guardrails.
-- **PowerShell 5.1 floor.** Scripts must run under Windows PowerShell 5.1: no ternary `? :`,
-  no null-coalescing `??`, and no inline `if(){}else{}` used *as a function argument*
-  (precompute into a variable first).
+  `Set-Az*` / `Remove-Az*`, or anything that mutates a tenant, to the analysis path. The only
+  writes there are local files under `output/`. The lone sanctioned write tool is the existing
+  opt-in quota-group rollout (`Deploy-QuotaGroups.ps1`); new mutating features need explicit
+  maintainer agreement and must be opt-in, `-WhatIf`-supporting and `ShouldProcess`-guarded. See
+  [AGENTS.md](AGENTS.md) for the full guardrails.
+- **PowerShell 5.1 floor (analysis scripts).** Analysis scripts must run under Windows PowerShell
+  5.1: no ternary `? :`, no null-coalescing `??`, and no inline `if(){}else{}` used *as a function
+  argument* (precompute into a variable first). The opt-in quota-group rollout scripts are the
+  exception — they declare `#Requires -Version 7.0`.
 - **No secrets, no identifiers.** Never commit credentials, tenant IDs, subscription IDs,
   identifying names, or live `output/` data. The `.gitignore` excludes `output/` and
   `capacity-config.json` — keep it that way.

@@ -1,15 +1,27 @@
 # AGENTS.md — Azure Capacity & Enablement Toolkit
 
-> Instructions for an AI agent (e.g. GitHub Copilot CLI) driving this **read-only** toolkit
-> against an Azure tenant. If you are an agent: read this file fully before running anything.
+> Instructions for an AI agent (e.g. GitHub Copilot CLI) driving this **read-only-by-default**
+> toolkit against an Azure tenant. If you are an agent: read this file fully before running anything.
 
 ## 0. Golden rules (read first, never break)
 
-This toolkit is **READ-ONLY by contract**. You exist to *observe and report*, never to change a tenant.
+This toolkit is **READ-ONLY BY DEFAULT**. You exist to *observe and report*. It contains exactly one
+write tool — `Deploy-QuotaGroups.ps1`, which provisions Azure Quota Groups — and you must treat it as
+**off by default**: never run it unless the human explicitly asks you to provision quota groups *in
+this run* and confirms after a `-WhatIf` preview.
 
-- **NEVER** create, modify, delete, scale, move or restart any Azure resource.
-- **NEVER** run `az ... create/update/delete/set`, `New-Az*`, `Set-Az*`, `Remove-Az*`, `terraform apply`, `kubectl apply/delete`, or anything that mutates state. The only writes you perform are **local CSV / HTML / JSON files** under `output/`.
-- Only the `Get-*`, `Scan-*`, `Watch-*` and `New-*Report/Dashboard/EnablementRequest` scripts in `scripts/` are in scope. `New-EnablementRequest` only **drafts text** — it does not submit anything.
+- **NEVER** create, modify, delete, scale, move or restart any Azure resource **with the analysis
+  scripts**, and never run `az ... create/update/delete/set`, `New-Az*`, `Set-Az*`, `Remove-Az*`,
+  `terraform apply`, `kubectl apply/delete`, or anything else that mutates state on your own
+  initiative. The only writes the analysis side performs are **local CSV / HTML / JSON files** under
+  `output/`.
+- The `Get-*`, `Scan-*`, `Watch-*` and `New-*Report/Dashboard/EnablementRequest` scripts are
+  **read-only** and always in scope. `New-EnablementRequest` only **drafts text** — it does not submit
+  anything.
+- `Deploy-QuotaGroups.ps1` and `New-QuotaGroupConfig.ps1` are the **opt-in write path**. Only touch
+  them on explicit human instruction. Always run `Deploy-QuotaGroups.ps1 -Action Validate` then
+  `-WhatIf`, show the planned changes, and get an explicit OK **before** any execute run. See
+  `docs/quota-groups.md`.
 - **Confirm before logging in or switching tenant/subscription.** Show the user which tenant/account you are about to use and wait for an explicit OK. Never silently change their active `az` context.
 - **Minimum access is Reader** (plus management-group *read* for quota groups). If a command fails with `AuthorizationFailed`, report it as a missing-permission finding — do **not** try to escalate or work around RBAC.
 - Treat all discovered data (subscription names, GUIDs, resource names) as **tenant-confidential**. Do not send it to third-party services. Before a generated dashboard is shared externally, clear `output/` (see §6).
@@ -99,7 +111,9 @@ Confirm an `output\README.md` placeholder remains. Never commit `output/` data t
 
 ## Operator notes
 
-- You only need **Reader** (and management-group read for quota groups). You cannot break anything — every script is read-only.
+- For analysis you only need **Reader** (and management-group read for quota groups). The analysis
+  scripts cannot break anything — they are read-only. The opt-in `Deploy-QuotaGroups.ps1` rollout is
+  the one exception and needs elevated quota roles; do not run it without explicit instruction.
 - Start at §3 Step 1. If a step errors with `AuthorizationFailed`, that scope is simply skipped; the rest still works.
 - Drive discovery first (`Get-UsedSkus`) so the report reflects the tenant's *real* SKUs/families, not the defaults.
 - Set `-SecondaryRegion` to the stated DR/migration target so the readiness tiers answer the actual question; add `-EvaluateRegions` for "what about region X?" asks.

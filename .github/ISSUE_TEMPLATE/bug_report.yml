@@ -19,7 +19,7 @@ body:
           required: true
         - label: I removed all tenant data (IDs, names, output) from anything I attach below.
           required: true
-        - label: I am running a read-only command — this is not a request to add a write/mutating feature.
+        - label: This is a bug report about existing behaviour — not a request to add a new write/mutating feature (use a feature request for that).
           required: true
   - type: textarea
     id: what-happened
