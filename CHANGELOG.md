@@ -36,6 +36,10 @@ All notable changes to this project are documented here. The format is based on
   `Mutations: opt-in only`, and AGENTS.md / contributor guidance keep the analysis path strictly
   read-only while documenting the single opt-in write tool (Validate + `-WhatIf` + confirm before
   any execute run). No behaviour change to the analysis scripts.
+- **Official Microsoft Learn references** added throughout the docs — inline links at first mention
+  of each concept (availability zones, regions, vCPU quotas, quota groups, VM sizes, Spot, Resource
+  Graph, AKS / PostgreSQL / MySQL reliability) plus a consolidated "Further reading" table in
+  `concepts.md` and pointers from the README, dashboard and quota-groups guides.
 
 ## [0.1.0] - 2026-06-22
 

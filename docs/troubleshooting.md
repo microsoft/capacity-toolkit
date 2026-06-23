@@ -23,7 +23,7 @@ command would have hidden.
 Yes. Every read in this toolkit works with **Reader**. Pulling cluster credentials
 (`listClusterUserCredential`) does **not** — so you get no pod/node-level visibility. Set
 expectations accordingly and lean on VMSS instance views and the activity log for cluster health.
-Inventorying AKS (via Resource Graph) is fine with Reader; inspecting *inside* a cluster needs
+Inventorying AKS (via [Resource Graph](https://learn.microsoft.com/en-us/azure/governance/resource-graph/overview)) is fine with Reader; inspecting *inside* a cluster needs
 Cluster User/Admin.
 
 ## Quota & enablement
@@ -41,7 +41,8 @@ No. A group can enrol dozens of subscriptions (`groupType: AllocationGroup`) yet
 `groupQuotaLimits` set in any region — members then draw on their own per-sub quota. *"Has a quota
 group" ≠ "is actively pooling capacity."* Also note the `groupQuotaLimits` API **requires** a
 `$filter=location eq '<region>'`; without it you get `BadRequest: $filter not found`. Report the
-limits-set flag, not just the group's existence.
+limits-set flag, not just the group's existence. (Background:
+[Azure Quota Groups](https://learn.microsoft.com/en-us/azure/quotas/quota-groups).)
 
 ### Do I need one `skus` REST call per SKU?
 
