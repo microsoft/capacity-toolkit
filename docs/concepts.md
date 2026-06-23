@@ -22,6 +22,28 @@ Practical consequences:
   [on-demand capacity reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview),
   which is a separate construct from quota.
 
+## Placement score — the closest signal to "will it actually deploy?"
+
+Because quota does not prove capacity, the one *programmatic* signal Azure offers is the
+[**Spot Placement Score**](https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/spot-placement-score):
+for a given VM size, region/zone and desired instance count it returns `High` / `Medium` / `Low`,
+derived from real Spot allocation probability. `Get-SpotPlacementScore.ps1` collects it.
+
+Read it carefully:
+
+- It scores **Spot** capacity. There is **no public placement-score API for on-demand** VMs — treat a
+  Spot score as a *proxy* for regional capacity pressure (Spot is squeezed first), never a guarantee
+  for on-demand allocation.
+- A score is valid **only at the moment it is requested** — Spot shifts intra-day. The toolkit
+  timestamps every row; never present a stale score as current.
+- `High` / `Medium` still does **not** guarantee allocation or freedom from eviction — validate a
+  target with a small test deployment (the rule that never changes).
+- The API also returns an `isQuotaAvailable` flag per result — a handy cross-check against the
+  toolkit's own family-quota numbers.
+
+This needs the read-only built-in **"Compute Recommendations Role"** (a single
+`Microsoft.Compute/locations/placementScores/generate/action`, no mutations) in addition to Reader.
+
 ## Regional vs zonal enablement
 
 A SKU's availability has **two independent signals**:

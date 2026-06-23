@@ -22,6 +22,7 @@ This page takes you from zero to a rendered capacity dashboard.
 | Activity-log error scan | **Reader** | for watching reconciles / allocation errors |
 | Region footprint / multi-region compare | **Reader** | Resource Graph + per-region skus read |
 | Quota group (shared pool) read | **Management-group Reader** | subscription Reader is *not* enough |
+| Spot placement score (allocation-likelihood signal) | **Compute Recommendations Role** + Reader | read-only API (`placementScores/generate/action` — no mutations); Reader alone is *not* enough |
 | Quota group **provisioning** (opt-in write) | **GroupQuota Request Operator** (MG) + **Quota Request Operator** / **Contributor** (subs) | only for `Deploy-QuotaGroups.ps1`; see the quota-groups guide |
 | SKU / regional enablement **changes** | **Not covered** | requires an Azure support request to the capacity team |
 | `kubectl` / node / pod inspection | **Cluster User / Admin** | Reader **cannot** pull cluster credentials |

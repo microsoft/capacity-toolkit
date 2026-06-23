@@ -8,6 +8,14 @@ All notable changes to this project are documented here. The format is based on
 
 ### Added
 
+- **Spot Placement Score lens** (`Get-SpotPlacementScore.ps1`) — a read-only collector that calls the
+  Azure Spot Placement Score API (`Microsoft.Compute/locations/.../placementScores/spot/generate`,
+  api-version `2025-06-05`) to return an allocation-likelihood signal (`High` / `Medium` / `Low`) per
+  VM size × region × zone — the closest programmatic answer to the toolkit's "quota ≠ capacity"
+  caveat. It scores **Spot** capacity (a proxy for regional pressure, not an on-demand guarantee), is
+  time-sensitive (every row timestamped), and needs the read-only built-in **"Compute Recommendations
+  Role"** in addition to Reader. Chunks requests to the API limits (≤8 regions × ≤5 sizes) and handles
+  throttling / missing-role responses gracefully.
 - **Quota Group rollout (opt-in write tool)** — `Deploy-QuotaGroups.ps1`, a generic,
   config-driven, idempotent engine that provisions Azure Quota Groups
   (`Microsoft.Quota/groupQuotas`) from a JSON design: registers providers, creates groups at
