@@ -125,3 +125,10 @@ See [`examples/quota-groups.sample.json`](https://github.com/microsoft/capacity-
   `standardesv5family`).
 
 Never commit a config containing real tenant subscription IDs or management-group names.
+
+## Further reading — official Microsoft documentation
+
+- [Share quota across subscriptions with Azure Quota Groups](https://learn.microsoft.com/en-us/azure/quotas/quota-groups) — the feature this tooling provisions.
+- [View quotas — Azure Quotas](https://learn.microsoft.com/en-us/azure/quotas/view-quotas) and [vCPU quotas — Azure Virtual Machines](https://learn.microsoft.com/en-us/azure/virtual-machines/quotas) — the per-subscription quota that group pools draw on.
+- [VM sizes overview](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview) — the VM families used as `resourceName` values.
+- See [Concepts → Quota groups](concepts.md#quota-groups-allocation-groups) for how pooling and stranded headroom work.

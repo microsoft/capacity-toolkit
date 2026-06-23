@@ -18,7 +18,7 @@ This page takes you from zero to a rendered capacity dashboard.
 | SKU restriction / zonal enablement scan | **Reader** | `Microsoft.Compute/skus` is a subscription-level read |
 | Zone (logical→physical) mapping | **Reader** | per-subscription `locations` read |
 | Quota / usage | **Reader** | `az vm list-usage` |
-| AKS inventory (Resource Graph) | **Reader** | needs the `resource-graph` az extension (auto-installed) |
+| AKS inventory ([Resource Graph](https://learn.microsoft.com/en-us/azure/governance/resource-graph/overview)) | **Reader** | needs the `resource-graph` az extension (auto-installed) |
 | Activity-log error scan | **Reader** | for watching reconciles / allocation errors |
 | Region footprint / multi-region compare | **Reader** | Resource Graph + per-region skus read |
 | Quota group (shared pool) read | **Management-group Reader** | subscription Reader is *not* enough |

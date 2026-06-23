@@ -53,3 +53,9 @@ region still needs a real test deployment before you commit a migration.
 The dashboard embeds whatever was in `output/` — i.e. real subscription names and resource counts.
 Clear `output/` (or regenerate against sanitised data) before handing it on. See
 [Sharing & security](sharing-and-security.md).
+
+## Further reading
+
+For the official Microsoft documentation behind the concepts these tabs visualise (availability
+zones, regions, quotas, quota groups, AKS / database reliability), see
+[Concepts → Further reading](concepts.md#further-reading--official-microsoft-documentation).

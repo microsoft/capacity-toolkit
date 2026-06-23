@@ -48,6 +48,16 @@ analysis** — see the note below for the one optional write tool.
 
 ¹ AKS node pools draw on the same VM-family quota as compute, so quota coverage is via the compute families.
 
+📚 **Learn more (official Microsoft docs):**
+[availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview) ·
+[regions](https://learn.microsoft.com/en-us/azure/reliability/regions-overview) ·
+[VM vCPU quotas](https://learn.microsoft.com/en-us/azure/virtual-machines/quotas) ·
+[Quota Groups](https://learn.microsoft.com/en-us/azure/quotas/quota-groups) ·
+[AKS reliability](https://learn.microsoft.com/en-us/azure/reliability/reliability-aks) ·
+[PostgreSQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-postgresql) /
+[MySQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-mysql) reliability.
+More in [Concepts → Further reading](docs/concepts.md#further-reading--official-microsoft-documentation).
+
 > 🛠️ **One optional write tool.** Beyond analysis, `Deploy-QuotaGroups.ps1` (with the
 > `New-QuotaGroupConfig.ps1` bridge) can *provision* quota groups from a JSON design. It is
 > a deliberately separate, **opt-in** tool: PowerShell 7+, supports `-WhatIf`, is guarded by

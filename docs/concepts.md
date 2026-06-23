@@ -7,10 +7,10 @@ dangerously confident answer.
 
 This is the single most important idea in the toolkit.
 
-An approved **quota** only raises the *ceiling* on how many cores you are *allowed* to allocate.
-It does **not** reserve physical capacity — the capacity is only held once it is actually
-*consumed*. A region can show full quota headroom and still refuse to place your VMs because the
-datacentre is constrained.
+An approved [**quota**](https://learn.microsoft.com/en-us/azure/quotas/view-quotas) only raises the
+*ceiling* on how many cores you are *allowed* to allocate. It does **not** reserve physical capacity —
+the capacity is only held once it is actually *consumed*. A region can show full quota headroom and
+still refuse to place your VMs because the datacentre is constrained.
 
 Practical consequences:
 
@@ -18,13 +18,16 @@ Practical consequences:
 - Always validate a target region with a **small test deployment** before advising a migration or
   failover plan.
 - State it plainly in any report: "N cores of quota granted" ≠ "N cores reserved".
+- If you need a *guarantee* that capacity is held, that is
+  [on-demand capacity reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview),
+  which is a separate construct from quota.
 
 ## Regional vs zonal enablement
 
 A SKU's availability has **two independent signals**:
 
 - **Regional enablement** — is the SKU offered in the region at all?
-- **Zonal enablement** — within the region, which **availability zones** is it open in?
+- **Zonal enablement** — within the region, which [**availability zones**](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview) is it open in?
 
 A SKU can be open regionally but blocked in specific zones (or the reverse). Reporting only
 "enabled" without qualifying the zones is misleading. The toolkit always reports both — e.g. one
@@ -41,6 +44,8 @@ Under the hood, each SKU carries a `restrictions[]` array:
 Availability zones are presented to each subscription as **logical** numbers `1`, `2`, `3` — but
 those logical numbers map to **different physical datacentres** in each subscription. Logical
 zone "1" in subscription A may be a different physical zone than logical "1" in subscription B.
+(Microsoft documents this as
+[physical and logical availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview#physical-and-logical-availability-zones).)
 
 Why it matters:
 
@@ -54,15 +59,21 @@ Why it matters:
 
 ## One SKU restriction governs every VM-backed service
 
-`Microsoft.Compute/skus` restrictions (and the `az vm list-usage` family quota) apply not just to
-VMs / VM Scale Sets / AKS, but to **Batch, Service Fabric, Azure ML compute, Databricks, Azure Red
-Hat OpenShift, App Service Environment, Spring Apps** and more — they all draw from the same
-SKU/quota pool. Enabling a SKU family unblocks all of them at once.
+`Microsoft.Compute/skus` restrictions (and the
+[`az vm list-usage` family quota](https://learn.microsoft.com/en-us/azure/virtual-machines/quotas))
+apply not just to VMs / VM Scale Sets / AKS, but to **Batch, Service Fabric, Azure ML compute,
+Databricks, Azure Red Hat OpenShift, App Service Environment, Spring Apps** and more — they all draw
+from the same [SKU](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview)/quota
+pool. Enabling a SKU family unblocks all of them at once.
 
 The notable exception is **database Flexible Servers** (PostgreSQL / MySQL), which have their own
 compute tiers — **Burstable** (B-series), **General Purpose** (D-series) and **Memory Optimized**
 (E-series) — plus an independent availability-zone selection. `Get-FlexServerZones.ps1` covers them
 and reports whatever SKU and tier each server actually runs, so it is not limited to a fixed list.
+See the reliability guides for
+[PostgreSQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-postgresql) and
+[MySQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-mysql) Flexible
+Server.
 
 ## Complete sight — what the toolkit covers
 
@@ -76,7 +87,8 @@ enablement and quota actually gate:
     - **enabled-but-unused families** — latent head-room you already hold,
     - **blocked families** — what a support request must cover,
     - **in-use families low on quota** — risk.
-- **The umbrella limits** — `Total Regional vCPUs` (`cores`) and `Spot/Low-priority vCPUs`
+- **The umbrella limits** — `Total Regional vCPUs` (`cores`) and
+  [`Spot/Low-priority vCPUs`](https://learn.microsoft.com/en-us/azure/virtual-machines/spot-vms)
   (`lowPriorityCores`) per subscription, which cap you independently of any single family.
 - **Zonal footprint of non-compute resources** — `Get-ZonalResourceInventory.ps1` (disks, public
   IPs, NAT gateways, app gateways, Kusto…) and `Get-FlexServerZones.ps1`.
@@ -89,8 +101,9 @@ enumerate provider usages and join to enablement — so these slot in as future 
 
 ## Region readiness model
 
-When evaluating where a workload can live, the dashboard ranks regions as a **tiered hierarchy**
-rather than a flat list:
+When evaluating where a workload can live, the dashboard ranks
+[regions](https://learn.microsoft.com/en-us/azure/reliability/regions-overview) as a **tiered
+hierarchy** rather than a flat list:
 
 1. **Primary (home)** — your current region (`-Location`).
 2. **Chosen secondary** — your stated failover / migration target (`-SecondaryRegion`).
@@ -106,7 +119,8 @@ with the recommendation to validate with a test deployment.
 ## Quota groups (allocation groups)
 
 A **quota group** pools several subscriptions under a management group so they can share a quota
-allocation. Two things to know:
+allocation (the [Azure Quota Groups](https://learn.microsoft.com/en-us/azure/quotas/quota-groups)
+feature). Two things to know:
 
 - A group can enrol dozens of subscriptions (`groupType: AllocationGroup`) yet have **no pooled
   limit set** in any region — in which case members still draw on their own per-subscription quota.
@@ -131,3 +145,22 @@ A representative shape of the situation this toolkit is built to analyse — nam
   is why *enabling* that family was the critical path rather than forcing a migration.
 - **Recovery:** clusters already in a **Failed** state did not self-heal when the SKU was enabled;
   each needed an explicit reconcile afterwards (see [Troubleshooting & FAQ](troubleshooting.md)).
+
+## Further reading — official Microsoft documentation
+
+Authoritative references for the concepts above (Microsoft Learn):
+
+| Topic | Microsoft Learn |
+|---|---|
+| Availability zones (physical vs logical) | [What are Azure availability zones?](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview) |
+| Azure regions | [What are Azure regions?](https://learn.microsoft.com/en-us/azure/reliability/regions-overview) |
+| VM vCPU quotas | [vCPU quotas — Azure Virtual Machines](https://learn.microsoft.com/en-us/azure/virtual-machines/quotas) |
+| Viewing & managing quotas | [View quotas — Azure Quotas](https://learn.microsoft.com/en-us/azure/quotas/view-quotas) |
+| Quota ≠ capacity (guaranteed capacity) | [On-demand capacity reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview) |
+| VM sizes / SKU families | [Virtual machine sizes overview](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview) |
+| Spot / low-priority capacity | [Azure Spot Virtual Machines](https://learn.microsoft.com/en-us/azure/virtual-machines/spot-vms) |
+| Quota Groups (pooled quota) | [Share quota across subscriptions with Azure Quota Groups](https://learn.microsoft.com/en-us/azure/quotas/quota-groups) |
+| AKS reliability & availability zones | [Reliability in Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/reliability/reliability-aks) |
+| PostgreSQL Flexible Server reliability / HA | [Reliability in Azure Database for PostgreSQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-postgresql) |
+| MySQL Flexible Server reliability / HA | [Reliability in Azure Database for MySQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-mysql) |
+| Azure Resource Graph (inventory queries) | [Azure Resource Graph overview](https://learn.microsoft.com/en-us/azure/governance/resource-graph/overview) |
