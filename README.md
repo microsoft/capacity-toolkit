@@ -43,7 +43,7 @@ analysis** — see the note below for the one optional write tool.
 |---|:---:|:---:|:---:|:---:|:---:|---|
 | **Compute — VMs & VM Scale Sets** | ✅ | ✅ | ✅ | ✅ | ✅ | `Get-UsedSkus`, `Scan-SkuEnablement`, `Get-SkuCatalogue`, `Get-QuotaUsage`, `Get-ZoneMappings` |
 | **Capacity reservations (guaranteed capacity)** | ✅ | ✅ | — | ✅ | ✅ | `Get-CapacityReservations` |
-| **AKS (managed Kubernetes)** | ✅ | ✅ | ✅¹ | ✅ | ✅ | `Get-AksInventory` |
+| **AKS (managed Kubernetes)** | ✅ | ✅ | ✅¹ | ✅ | ✅ | `Get-AksInventory`, `Get-AksScaleHeadroom` |
 | **PostgreSQL / MySQL Flexible Servers** | ✅ | ✅ | — | ✅ | ✅ | `Get-FlexServerZones` |
 | **Quota Groups (pooled vCPU quota)** | — | — | ✅ | — | ✅ | `Get-QuotaGroups`, `Get-QuotaGroupPlan` |
 | **Any zone-pinned resource / region footprint** | — | ✅ | — | ✅ | ✅ | `Get-ZonalResourceInventory`, `Get-ResourceInventory`, `Get-RegionFootprint` |

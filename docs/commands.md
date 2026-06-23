@@ -27,6 +27,7 @@ Most scripts accept:
 | Validate quota / headroom per family | `Get-QuotaUsage.ps1 -Location <r> -Families <list>` | `<fam>_used/_limit/_avail` + totals |
 | Inventory AKS clusters tenant-wide | `Get-AksInventory.ps1 [-Location <r>]` | name, sub, rg, region, state, k8s, nodePools, nodeCount, node SKUs |
 | **Inventory on-demand capacity reservations** (the guaranteed-capacity construct) | `Get-CapacityReservations.ps1 [-Location <r>] [-SubscriptionCsv …]` | `capacity-reservations-…csv` (per reservation: SKU, region, zone, reserved vs consumed, idle / over-allocated / at-capacity flags) |
+| **AKS scale-headroom** — can every node pool reach its autoscaler `maxCount` within current family quota? | `Get-AksScaleHeadroom.ps1 -Location <r> [-SubscriptionCsv …]` | `aks-scale-headroom-detail-…csv` (per pool) + `…-rollup-…csv` (per family: incremental vCPUs needed vs quota, `CanFullyScale`, `ShortfallVCPUs`) |
 | Review database (PostgreSQL/MySQL) zone + HA resilience | `Get-FlexServerZones.ps1 [-Location <r>]` | per-server SKU, tier, zone, HA mode, standby zone; single-zone flag |
 | Sweep all zone-pinned resources for single-zone gaps | `Get-ZonalResourceInventory.ps1 [-Location <r>]` | every resource with a zone, by type, with SingleZone flag |
 | **Complete overview: every resource type × sub × region** | `Get-ResourceInventory.ps1 [-SubscriptionIds …]` | `resource-inventory-…csv` (type, sub, region, count, zone-pinned count) |
