@@ -1,0 +1,50 @@
+{
+  "$schema": "internal: Deploy-QuotaGroups input schema",
+  "tenantId": "00000000-0000-0000-0000-000000000000",
+  "apiVersion": "2025-09-01",
+  "resourceProvider": "Microsoft.Compute",
+
+  "_comment": "Fully synthetic sample for the fictional 'Zava Inc'. Safe to copy and edit. Each group = one Microsoft.Quota/groupQuotas object created at a Management Group scope. 'name' MUST be lowercase alphanumeric, start with a letter, 3-63 chars, no hyphens/underscores (Azure constraint). 'displayName' is the friendly label. 'members' accept subscription IDs OR display names. 'groupLimits' request a pooled quota at the group level per (location, family). 'allocations' hand quota from the group down to a member subscription. Generate a real config from your own data with New-QuotaGroupConfig.ps1.",
+
+  "groups": [
+    {
+      "name": "zavaplatformprod",
+      "displayName": "QG-Zava-Platform-Prod",
+      "managementGroupId": "zava-platform-prod",
+      "registerProviders": true,
+      "members": [
+        "Zava-Payments-Prod",
+        "Zava-Storefront-Prod",
+        "11111111-1111-1111-1111-111111111111"
+      ],
+      "groupLimits": [
+        { "location": "norwayeast", "resourceName": "standardbsv2family", "limit": 2400, "comment": "Pooled AKS B-series buffer for prod node pools" },
+        { "location": "norwayeast", "resourceName": "standarddadv6family", "limit": 600, "comment": "Pooled D-ads v6 buffer for general compute" },
+        { "location": "norwayeast", "resourceName": "standardesv5family", "limit": 480, "comment": "Pooled E-sv5 buffer for memory-bound services" }
+      ],
+      "allocations": [
+        { "subscription": "Zava-Payments-Prod", "location": "norwayeast", "resourceName": "standardbsv2family", "limit": 800 },
+        { "subscription": "Zava-Payments-Prod", "location": "norwayeast", "resourceName": "standarddadv6family", "limit": 200 },
+        { "subscription": "Zava-Storefront-Prod", "location": "norwayeast", "resourceName": "standardbsv2family", "limit": 800 },
+        { "subscription": "Zava-Storefront-Prod", "location": "norwayeast", "resourceName": "standardesv5family", "limit": 240 }
+      ]
+    },
+    {
+      "name": "zavanonprod",
+      "displayName": "QG-Zava-NonProd",
+      "managementGroupId": "zava-platform-nonprod",
+      "registerProviders": true,
+      "members": [
+        "Zava-Dev-Sandbox",
+        "Zava-Test-Sandbox"
+      ],
+      "groupLimits": [
+        { "location": "norwayeast", "resourceName": "standardbsv2family", "limit": 400, "comment": "Shared dev/test B-series pool" }
+      ],
+      "allocations": [
+        { "subscription": "Zava-Dev-Sandbox", "location": "norwayeast", "resourceName": "standardbsv2family", "limit": 120 },
+        { "subscription": "Zava-Test-Sandbox", "location": "norwayeast", "resourceName": "standardbsv2family", "limit": 120 }
+      ]
+    }
+  ]
+}

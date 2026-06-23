@@ -33,6 +33,8 @@ Most scripts accept:
 | Draft a support ticket for Regional + Zonal enablement | `New-EnablementRequest.ps1 -Location <r> -Skus <list> [-SubscriptionCsv …]` | `enablement-request-…md` (paste-ready) + findings CSV |
 | Read shared quota-group pools: type + members + pooled limits | `Get-QuotaGroups.ps1 [-Regions <list>] [-ManagementGroupId <id>]` | `quota-groups-…csv` (group type, member count, limits-set flag) + `quota-group-members-…csv` + `quota-group-limits-…csv` |
 | **Model a pooled-quota design** (subscription Reader only) | `Get-QuotaGroupPlan.ps1 [-HeadroomFactor 1.3]` | `quota-group-plan-…csv` (pooled used/limit/free + stranded headroom + suggested pool) + `…-members-…csv` (per-sub posture) |
+| Turn a quota report into a deploy-ready design ⚠️ PS7 | `New-QuotaGroupConfig.ps1 -SkeletonConfig <json> -QuotaReportCsv <csv> -OutputConfig <json>` | populated quota-groups config (auto-detects toolkit `quota-usage` CSV or external azure-quota-reports CSV) |
+| **Provision** quota groups (the one opt-in write tool) ⚠️ PS7 | `Deploy-QuotaGroups.ps1 -ConfigPath <json> [-Action <phase>] [-WhatIf]` | creates groups, adds members, requests pooled limits, allocates quota — idempotent, `SupportsShouldProcess` |
 | Watch for an enablement to land | `Watch-SkuEnablement.ps1 -SubscriptionIds … -Sku … [-WatchResourceIds <aksId>]` | rolling CSV log + error alerts |
 | Render a visual HTML dashboard | `New-CapacityDashboard.ps1 [-Location <r>] [-SecondaryRegion <r>]` | self-contained `capacity-dashboard-…html` |
 | **Try it offline — generate synthetic demo data** (no Azure access) | `New-DemoDataset.ps1 [-OutDir <path>] [-Company <name>] [-Seed <int>]` | a full set of fictional CSVs you can render with the dashboard |

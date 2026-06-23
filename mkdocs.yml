@@ -43,6 +43,7 @@ nav:
   - Getting started: getting-started.md
   - Concepts: concepts.md
   - Commands reference: commands.md
+  - Quota Groups rollout: quota-groups.md
   - Dashboard guide: dashboard.md
   - Troubleshooting & FAQ: troubleshooting.md
   - Sharing & security: sharing-and-security.md
