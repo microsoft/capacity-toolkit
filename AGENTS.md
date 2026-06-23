@@ -107,6 +107,31 @@ Remove-Item ..\output\* -Recurse -Force -Exclude README.md
 ```
 Confirm an `output\README.md` placeholder remains. Never commit `output/` data to a shared repo.
 
+## 7. AI & agent governance
+
+What an AI agent — and anyone reviewing this for compliance — should know about how "AI" relates to
+this toolkit:
+
+- **The toolkit itself runs no AI/ML.** It is PowerShell + the Azure CLI (`az`) + a static HTML
+  dashboard. It makes **no calls to any language model or inference service**, contains no embedded
+  models, and produces no model-generated output. There is nothing to "govern" at the model layer
+  because there is no model.
+- **No data egress.** It sends tenant data to **no third party** — not to a model, telemetry
+  endpoint, or analytics service. The only network calls are the operator's own authenticated `az` /
+  ARM / Microsoft Graph reads. All output stays in local files under `output/`.
+- **The only AI relationship is operation, not inference.** An AI agent (e.g. GitHub Copilot CLI)
+  may *drive* this toolkit. When it does, this entire file is the governance contract: read-only by
+  default, the one opt-in write tool requires explicit human instruction + `-WhatIf` + confirmation
+  (§0), Reader-minimum access with no RBAC escalation (§2), confirm before any login/tenant switch
+  (§0), and the §6 sanitization sweep before sharing.
+- **Human accountability stays with the operator.** Any action the agent proposes — especially the
+  opt-in quota-group rollout — is the human operator's decision to approve and own. The agent must
+  surface findings and planned changes; it must not act on the tenant beyond read-only analysis
+  without that explicit approval.
+- **Outputs are advisory.** Capacity/quota readouts inform decisions; they are not a guarantee.
+  Always honour the *quota ≠ capacity* caveat (§5) and validate with a test deployment before any
+  migration or commitment.
+
 ---
 
 ## Operator notes
