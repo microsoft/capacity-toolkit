@@ -31,6 +31,7 @@ and AKS resilience — packaged as generic scripts plus a single, self-contained
 - *How many AKS clusters do we have, where, and on what node SKUs?*
 - *Which regions do we run in, and is region X a viable alternative to deploy/move to?*
 - *Do we have quota groups, how are they designed, and is there pooled headroom?*
+- *Is there actually Spot capacity to place SKU X in region/zone Y right now (placement score)?*
 - *Draft me the support request to enable SKU X regionally and in AZ01/AZ02/AZ03.*
 
 ## Services & coverage

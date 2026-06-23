@@ -30,6 +30,7 @@ Most scripts accept:
 | Sweep all zone-pinned resources for single-zone gaps | `Get-ZonalResourceInventory.ps1 [-Location <r>]` | every resource with a zone, by type, with SingleZone flag |
 | **Complete overview: every resource type × sub × region** | `Get-ResourceInventory.ps1 [-SubscriptionIds …]` | `resource-inventory-…csv` (type, sub, region, count, zone-pinned count) |
 | See which regions you run in + compare candidate regions | `Get-RegionFootprint.ps1 [-EvaluateRegions <list>] [-SubscriptionCsv …]` | per-region resource/AKS counts + `region-sku-comparison-…csv` + `region-quota-comparison-…csv` |
+| **Score Spot allocation likelihood** for SKUs in candidate regions/zones ⚠️ needs Compute Recommendations Role | `Get-SpotPlacementScore.ps1 [-ConfigPath …] [-DesiredLocations <list>] [-DesiredCount N]` | `spot-placement-…csv` (High/Medium/Low per SKU×region×zone + `IsQuotaAvailable`, timestamped) |
 | Draft a support ticket for Regional + Zonal enablement | `New-EnablementRequest.ps1 -Location <r> -Skus <list> [-SubscriptionCsv …]` | `enablement-request-…md` (paste-ready) + findings CSV |
 | Read shared quota-group pools: type + members + pooled limits | `Get-QuotaGroups.ps1 [-Regions <list>] [-ManagementGroupId <id>]` | `quota-groups-…csv` (group type, member count, limits-set flag) + `quota-group-members-…csv` + `quota-group-limits-…csv` |
 | **Model a pooled-quota design** (subscription Reader only) | `Get-QuotaGroupPlan.ps1 [-HeadroomFactor 1.3]` | `quota-group-plan-…csv` (pooled used/limit/free + stranded headroom + suggested pool) + `…-members-…csv` (per-sub posture) |
@@ -90,6 +91,16 @@ az rest --method get --url "https://management.azure.com/subscriptions/<SUB>/loc
 ```bash
 az vm list-usage -l norwayeast -o table
 # name.value e.g. standardBsv2Family ; currentValue / limit
+```
+
+**Spot placement score (allocation-likelihood; needs the Compute Recommendations Role):**
+
+```bash
+az rest --method post \
+  --url "https://management.azure.com/subscriptions/<SUB>/providers/Microsoft.Compute/locations/norwayeast/placementScores/spot/generate?api-version=2025-06-05" \
+  --headers "Content-Type=application/json" \
+  --body '{"availabilityZones":true,"desiredCount":10,"desiredLocations":["norwayeast"],"desiredSizes":[{"sku":"Standard_D4s_v5"}]}'
+# → placementScores[]: { region, availabilityZone, sku, score (High/Medium/Low/DataNotFoundOrStale/RestrictedSkuNotAvailable), isQuotaAvailable }
 ```
 
 **AKS inventory (Resource Graph — paginate, project raw, aggregate locally):**

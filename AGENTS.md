@@ -23,7 +23,7 @@ this run* and confirms after a `-WhatIf` preview.
   `-WhatIf`, show the planned changes, and get an explicit OK **before** any execute run. See
   `docs/quota-groups.md`.
 - **Confirm before logging in or switching tenant/subscription.** Show the user which tenant/account you are about to use and wait for an explicit OK. Never silently change their active `az` context.
-- **Minimum access is Reader** (plus management-group *read* for quota groups). If a command fails with `AuthorizationFailed`, report it as a missing-permission finding — do **not** try to escalate or work around RBAC.
+- **Minimum access is Reader** (plus management-group *read* for quota groups, and the read-only *Compute Recommendations Role* for Spot placement scores). If a command fails with `AuthorizationFailed`, report it as a missing-permission finding — do **not** try to escalate or work around RBAC.
 - Treat all discovered data (subscription names, GUIDs, resource names) as **tenant-confidential**. Do not send it to third-party services. Before a generated dashboard is shared externally, clear `output/` (see §6).
 
 ## 1. What this toolkit does
@@ -45,6 +45,7 @@ Output is a set of CSVs plus one **self-contained interactive HTML dashboard**.
 |---|---|
 | SKU / zonal enablement, zone mapping, quota/usage, AKS & resource inventory | **Reader** on the target subscriptions |
 | Quota groups (pooled quota) | **Reader** + **management-group read** |
+| Spot placement score (allocation-likelihood) | **Reader** + **Compute Recommendations Role** (read-only `placementScores/generate/action`) |
 
 If the user lacks a role, list the affected scenario and stop — do not attempt the scan.
 
