@@ -75,7 +75,7 @@ collector you already have:
   the region comes from `-Locations` (single region; default `norwayeast`). This keeps everything
   in one Reader-only ecosystem with no extra dependencies.
 - **External (also supported)** — the long CSV from
-  [azure-quota-reports](https://github.com/martinopedal/azure-quota-reports) by Martin Pedal, with
+  [azure-quota-reports](https://github.com/martinopedal/azure-quota-reports) by Martin Opedal, with
   `Provider` / `QuotaId` / `Limit` / `CurrentUsage` columns. Handy if you already run that tool to
   collect quota across subscriptions; the bridge produces the same result as the toolkit-native
   path. (It is a third-party community tool — its CSV layout may change over time, independently of
