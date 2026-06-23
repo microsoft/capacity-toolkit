@@ -42,6 +42,7 @@ analysis** — see the note below for the one optional write tool.
 | Service / area | SKU & region | AZ enablement | Quota & headroom | Resilience / HA | Inventory | Key scripts |
 |---|:---:|:---:|:---:|:---:|:---:|---|
 | **Compute — VMs & VM Scale Sets** | ✅ | ✅ | ✅ | ✅ | ✅ | `Get-UsedSkus`, `Scan-SkuEnablement`, `Get-SkuCatalogue`, `Get-QuotaUsage`, `Get-ZoneMappings` |
+| **Capacity reservations (guaranteed capacity)** | ✅ | ✅ | — | ✅ | ✅ | `Get-CapacityReservations` |
 | **AKS (managed Kubernetes)** | ✅ | ✅ | ✅¹ | ✅ | ✅ | `Get-AksInventory` |
 | **PostgreSQL / MySQL Flexible Servers** | ✅ | ✅ | — | ✅ | ✅ | `Get-FlexServerZones` |
 | **Quota Groups (pooled vCPU quota)** | — | — | ✅ | — | ✅ | `Get-QuotaGroups`, `Get-QuotaGroupPlan` |
@@ -54,6 +55,7 @@ analysis** — see the note below for the one optional write tool.
 [regions](https://learn.microsoft.com/en-us/azure/reliability/regions-overview) ·
 [VM vCPU quotas](https://learn.microsoft.com/en-us/azure/virtual-machines/quotas) ·
 [Quota Groups](https://learn.microsoft.com/en-us/azure/quotas/quota-groups) ·
+[capacity reservations](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview) ·
 [AKS reliability](https://learn.microsoft.com/en-us/azure/reliability/reliability-aks) ·
 [PostgreSQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-postgresql) /
 [MySQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-mysql) reliability.

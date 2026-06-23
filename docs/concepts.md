@@ -20,7 +20,11 @@ Practical consequences:
 - State it plainly in any report: "N cores of quota granted" ≠ "N cores reserved".
 - If you need a *guarantee* that capacity is held, that is
   [on-demand capacity reservation](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview),
-  which is a separate construct from quota.
+  which is a separate construct from quota. `Get-CapacityReservations.ps1` inventories what you have
+  actually reserved (SKU, region, zone) and how much of it is consumed vs sitting idle — closing the
+  loop on the one construct that truly holds capacity. Note it is **not** the same as a
+  [Reserved Instance](https://learn.microsoft.com/en-us/azure/cost-management-billing/reservations/save-compute-costs-reservations),
+  which is a billing discount with no capacity guarantee.
 
 ## Placement score — the closest signal to "will it actually deploy?"
 
