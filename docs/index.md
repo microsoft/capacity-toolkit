@@ -1,9 +1,10 @@
 # Azure Capacity & Enablement Toolkit
 
-A reusable, **read-only** toolkit for validating **regional / zonal SKU enablement, quota,
-capacity, zonal resilience and AKS / database footprint** in any Azure tenant — using nothing
-more than **Reader** access. It shows you, in concrete numbers, what is actually enabled in a
-region when you hit regional capacity or availability-zone constraints.
+A reusable, **read-only-by-default** toolkit for validating **regional / zonal SKU enablement, quota,
+capacity, zonal resilience and AKS / database footprint** in any Azure tenant — the analysis side
+uses nothing more than **Reader** access. It shows you, in concrete numbers, what is actually enabled
+in a region when you hit regional capacity or availability-zone constraints. One **opt-in** tool can
+also provision quota groups (see [Commands reference](commands.md) and the quota-groups guide).
 
 ## What it answers
 
@@ -25,15 +26,16 @@ region when you hit regional capacity or availability-zone constraints.
 | [Commands reference](commands.md) | Every script, its parameters and outputs, plus raw `az` one-liners |
 | [Dashboard guide](dashboard.md) | The HTML dashboard tabs and how to read them |
 | [Troubleshooting & FAQ](troubleshooting.md) | Common questions, platform gotchas, best practices |
-| [Sharing & security](sharing-and-security.md) | Read-only guarantees and how to sanitize before sharing |
+| [Sharing & security](sharing-and-security.md) | Read-only-by-default guarantees and how to sanitize before sharing |
 
 > **Automating it with an AI agent?** [`AGENTS.md`](../AGENTS.md) tells GitHub Copilot CLI (or any
 > agent) how to drive the toolkit safely against a tenant.
 
 ## At a glance
 
-- **Read-only.** Every script only reads; nothing is created, modified or deleted. The only
-  writes are local CSV / HTML / JSON files under `output/`.
+- **Read-only by default.** Every analysis script only reads; nothing is created, modified or
+  deleted, and the only writes are local CSV / HTML / JSON files under `output/`. The one
+  exception is the opt-in `Deploy-QuotaGroups.ps1` rollout tool (see the quota-groups guide).
 - **Reader access** is enough for everything except quota-group reads (management-group read) and
   `kubectl` inspection (Cluster User/Admin — out of scope).
 - **Self-contained output.** CSVs and a single interactive HTML dashboard that opens offline.

@@ -24,10 +24,17 @@ Closes #
 
 ## Toolkit standards checklist
 
-- [ ] **Read-only contract:** no `create/update/delete/set`, `New-Az*`, `Set-Az*`, `Remove-Az*`,
-      `terraform apply`, `kubectl apply/delete`, or any state-mutating call. Only local files under `output/` are written.
-- [ ] **Reader-only:** runs with Reader access (plus management-group read for quota-group features); failures on missing RBAC are reported, not worked around.
-- [ ] **PowerShell 5.1 compatible:** no ternary `? :`, no null-coalescing `??`, no inline `if(){}else{}` used as a function argument (precomputed into a variable instead).
+- [ ] **Read-only by default:** analysis changes add no `create/update/delete/set`, `New-Az*`,
+      `Set-Az*`, `Remove-Az*`, `terraform apply`, `kubectl apply/delete`, or other state-mutating
+      call; only local files under `output/` are written. (Any change to the opt-in
+      `Deploy-QuotaGroups.ps1` write path keeps it opt-in, `-WhatIf`-supporting and
+      `ShouldProcess`-guarded.)
+- [ ] **Access:** analysis runs with Reader access (plus management-group read for quota-group
+      reads); failures on missing RBAC are reported, not worked around. The quota-group rollout
+      documents its elevated roles.
+- [ ] **PowerShell 5.1 compatible (analysis scripts):** no ternary `? :`, no null-coalescing `??`,
+      no inline `if(){}else{}` used as a function argument. (The opt-in quota-group rollout scripts
+      may require PS7 via `#Requires -Version 7.0`.)
 - [ ] **No telemetry / no third-party calls:** nothing phones home; only the user's own authenticated `az` calls are made.
 - [ ] **No secrets or tenant data:** no credentials, tenant/subscription IDs, real subscription names, or `output/` data added to the repo. Defaults stay generic.
 - [ ] **Docs updated:** relevant page under `docs/` (and `README.md`/`AGENTS.md` if behaviour changed) reflects this change.

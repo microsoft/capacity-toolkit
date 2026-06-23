@@ -11,11 +11,11 @@ body:
     id: principles
     attributes:
       label: Alignment with toolkit principles
-      description: The toolkit is read-only, dependency-light and ships no telemetry.
+      description: The toolkit is read-only by default, dependency-light and ships no telemetry.
       options:
-        - label: This stays **read-only** — it does not create, modify, delete or otherwise mutate any Azure resource.
+        - label: This stays **read-only by default** — it does not mutate Azure resources, or (if a write is essential) it follows the opt-in, `-WhatIf`/`ShouldProcess` pattern of `Deploy-QuotaGroups.ps1`.
           required: true
-        - label: It works with **Reader** access (plus management-group read for quota-group features).
+        - label: It works with **Reader** access for analysis (writes, if any, document their elevated roles).
           required: true
         - label: It introduces no telemetry and no data leaving the user's machine.
           required: true

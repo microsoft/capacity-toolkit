@@ -22,12 +22,15 @@ This page takes you from zero to a rendered capacity dashboard.
 | Activity-log error scan | **Reader** | for watching reconciles / allocation errors |
 | Region footprint / multi-region compare | **Reader** | Resource Graph + per-region skus read |
 | Quota group (shared pool) read | **Management-group Reader** | subscription Reader is *not* enough |
-| Enablement / quota **changes** | **Not covered** | requires an Azure support request to the capacity team |
+| Quota group **provisioning** (opt-in write) | **GroupQuota Request Operator** (MG) + **Quota Request Operator** / **Contributor** (subs) | only for `Deploy-QuotaGroups.ps1`; see the quota-groups guide |
+| SKU / regional enablement **changes** | **Not covered** | requires an Azure support request to the capacity team |
 | `kubectl` / node / pod inspection | **Cluster User / Admin** | Reader **cannot** pull cluster credentials |
 
-> **Everything in this toolkit is read-only.** It never mutates a resource — every write is a local
-> file under `output/`. The enablement-request generator only *drafts* the support ticket text;
-> filing it is a manual step.
+> **This toolkit is read-only by default.** The analysis scripts never mutate a resource — every
+> write is a local file under `output/`. The one exception is the **opt-in** `Deploy-QuotaGroups.ps1`
+> rollout tool, which provisions quota groups and requires the elevated roles above; it supports
+> `-WhatIf` and is never invoked by the scans or dashboard. The enablement-request generator only
+> *drafts* the support ticket text; filing it is a manual step.
 
 ## Install
 

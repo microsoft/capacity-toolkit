@@ -5,16 +5,19 @@ sanitized. This page explains *why* it's safe and *what* to do before sharing an
 
 ## Why it's safe to run
 
-- **Read-only.** Every script only reads — `az rest GET`, `az ... list`, `az vm list-usage`,
-  Resource Graph queries, activity-log list. Nothing is created, modified or deleted. The only
-  writes are local files under `output/`. The full guardrails are in [`AGENTS.md`](../AGENTS.md).
+- **Read-only by default.** Every analysis script only reads — `az rest GET`, `az ... list`,
+  `az vm list-usage`, Resource Graph queries, activity-log list. Nothing is created, modified or
+  deleted, and the only writes are local files under `output/`. The single exception is the opt-in
+  `Deploy-QuotaGroups.ps1` rollout tool (it provisions quota groups, supports `-WhatIf`, and is run
+  only when you explicitly choose to). The full guardrails are in [`AGENTS.md`](../AGENTS.md).
 - **No secrets stored.** The toolkit stores no credentials; it relies entirely on the operator's own
   `az login` context.
 - **Self-contained outputs.** CSVs and the HTML dashboard are plain files with no external calls —
   the dashboard inlines all styling and opens offline.
-- **What it cannot do.** It cannot *change* enablement or quota (that needs an Azure support
-  request), and it cannot pull AKS cluster credentials (`kubectl`) — that needs Cluster User/Admin,
-  not Reader.
+- **What the analysis side cannot do.** The scans cannot *change* SKU/regional enablement or quota
+  (that needs an Azure support request), and they cannot pull AKS cluster credentials (`kubectl`) —
+  that needs Cluster User/Admin, not Reader. The only deliberate write is the opt-in quota-group
+  rollout above.
 
 ## What the output contains
 

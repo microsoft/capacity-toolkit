@@ -1,7 +1,8 @@
 site_name: Azure Capacity & Enablement Toolkit
 site_description: >-
-  Read-only tools and a self-contained dashboard to analyze Azure regional capacity,
-  availability-zone enablement, and quota — with only Reader access.
+  Read-only-by-default tools and a self-contained dashboard to analyze Azure regional capacity,
+  availability-zone enablement, and quota with Reader access — plus one opt-in tool to provision
+  quota groups.
 docs_dir: docs
 
 theme:
