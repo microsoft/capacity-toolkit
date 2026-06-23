@@ -8,6 +8,17 @@ All notable changes to this project are documented here. The format is based on
 
 ### Added
 
+- **AKS scale-headroom check** (`Get-AksScaleHeadroom.ps1`) — a read-only derivation that answers
+  "*if every node pool scaled to its autoscaler `maxCount`, would we run out of family quota?*" It
+  joins data the toolkit already reads — AKS node pools (Resource Graph), `Microsoft.Compute/skus`
+  (VM size → family + vCPUs) and `az vm list-usage` (per-family used/limit) — to compute the
+  **incremental vCPUs** each pool needs to reach its target, aggregates per VM family, and flags
+  families that **cannot fully scale** within current quota. Pools in the same family are summed
+  before comparison; **Spot pools are checked against the separate regional low-priority pool**, never
+  the regular family quota; autoscale-disabled pools target their current count. Emits a per-pool
+  detail CSV and a per-family rollup CSV, with `Finding` codes
+  (`OK` / `QuotaShortfall` / `MissingSkuMetadata` / `MissingQuotaFamily` / `SpotQuotaCheckNeeded`).
+  Reader-only. Resolves #12.
 - **Capacity Reservation inventory** (`Get-CapacityReservations.ps1`) — a read-only collector that
   enumerates `Microsoft.Compute/capacityReservationGroups` and their child `capacityReservations`
   across visible subscriptions (ARM read, api-version `2024-07-01`, `$expand=instanceView`) and reports,

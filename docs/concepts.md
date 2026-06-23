@@ -48,6 +48,19 @@ Read it carefully:
 This needs the read-only built-in **"Compute Recommendations Role"** (a single
 `Microsoft.Compute/locations/placementScores/generate/action`, no mutations) in addition to Reader.
 
+## AKS scale-headroom — will a node pool hit a quota wall?
+
+Quota is consumed when nodes are *created*, so a node pool with
+[**cluster autoscaler**](https://learn.microsoft.com/en-us/azure/aks/cluster-autoscaler) enabled can
+silently outgrow its VM-family [vCPU quota](https://learn.microsoft.com/en-us/azure/virtual-machines/quotas)
+on a scale-out — a risk that usually only surfaces during an incident. `Get-AksScaleHeadroom.ps1`
+joins three reads the toolkit already does — node pools (Resource Graph), `Microsoft.Compute/skus`
+(size → family + vCPUs) and `az vm list-usage` (per-family used/limit) — to compute the *incremental*
+vCPUs each pool needs to reach its `maxCount`, aggregates per family, and flags families that cannot
+fully scale. Two rules it bakes in: pools in the same family are **summed before** the comparison, and
+**Spot pools draw on the separate regional low-priority pool**, never the regular family quota. As
+always, clearing quota is necessary but not sufficient — it is not guaranteed physical capacity.
+
 ## Regional vs zonal enablement
 
 A SKU's availability has **two independent signals**:
