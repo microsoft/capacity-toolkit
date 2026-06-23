@@ -116,7 +116,10 @@ function Split-Chunk {
         $end = [Math]::Min($i + $Size - 1, $Items.Count - 1)
         $out += ,@($Items[$i..$end])
     }
-    return $out
+    # Leading comma stops PowerShell from unwrapping a single-element result on return,
+    # which would otherwise flatten one chunk back into its items (and index region/SKU
+    # strings character-by-character).
+    return ,$out
 }
 
 $regionChunks = Split-Chunk -Items $DesiredLocations -Size 8
