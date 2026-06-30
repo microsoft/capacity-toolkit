@@ -46,6 +46,7 @@ analysis** — see the note below for the one optional write tool.
 | **AKS (managed Kubernetes)** | ✅ | ✅ | ✅¹ | ✅ | ✅ | `Get-AksInventory`, `Get-AksScaleHeadroom` |
 | **Networking (VNets, public IPs, NICs, LBs, NAT gateways)** | — | — | ✅ | — | ✅ | `Get-NetworkQuota` |
 | **App Service (Microsoft.Web plans)** | — | — | ✅ | — | ✅ | `Get-AppServiceQuota` |
+| **Storage (account count + disk inventory)** | — | — | ✅ | — | ✅ | `Get-StorageQuota` |
 | **PostgreSQL / MySQL Flexible Servers** | ✅ | ✅ | — | ✅ | ✅ | `Get-FlexServerZones` |
 | **Quota Groups (pooled vCPU quota)** | — | — | ✅ | — | ✅ | `Get-QuotaGroups`, `Get-QuotaGroupPlan` |
 | **Any zone-pinned resource / region footprint** | — | ✅ | — | ✅ | ✅ | `Get-ZonalResourceInventory`, `Get-ResourceInventory`, `Get-RegionFootprint` |
@@ -60,6 +61,7 @@ analysis** — see the note below for the one optional write tool.
 [capacity reservations](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview) ·
 [networking limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#networking-limits) ·
 [App Service limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits) ·
+[Storage account limits](https://learn.microsoft.com/en-us/azure/storage/common/scalability-targets-standard-account) ·
 [AKS reliability](https://learn.microsoft.com/en-us/azure/reliability/reliability-aks) ·
 [PostgreSQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-postgresql) /
 [MySQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-mysql) reliability.
