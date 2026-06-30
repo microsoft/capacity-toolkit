@@ -61,6 +61,20 @@ fully scale. Two rules it bakes in: pools in the same family are **summed before
 **Spot pools draw on the separate regional low-priority pool**, never the regular family quota. As
 always, clearing quota is necessary but not sufficient — it is not guaranteed physical capacity.
 
+## Network quota — the silent deployment blocker
+
+VM-family vCPU quota gets all the attention, but a deployment can fail just as hard when a
+subscription runs out of **networking** quota in a region: no more
+[Public IP Addresses](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#networking-limits),
+Network Interfaces, Load Balancers or NAT gateways means no new VMs, regardless of compute headroom.
+`Get-NetworkQuota.ps1` reads the regional `Microsoft.Network/locations/{loc}/usages` API (the data
+behind `az network list-usages`) and reports every counter's used / limit / available with
+`NearLimit` / `AtLimit` flags. Two honesty rules it bakes in: counters the API returns with the
+placeholder `2147483647` limit are marked `IsUnbounded` (no fabricated percentage), and per-VNet
+sub-counters (`…PerVirtualNetwork`) are flagged `PerResourceScope` so they are not mistaken for a
+saturation scan of every VNet. As everywhere else in the toolkit, quota cleared is not capacity
+guaranteed.
+
 ## Regional vs zonal enablement
 
 A SKU's availability has **two independent signals**:

@@ -44,6 +44,7 @@ analysis** — see the note below for the one optional write tool.
 | **Compute — VMs & VM Scale Sets** | ✅ | ✅ | ✅ | ✅ | ✅ | `Get-UsedSkus`, `Scan-SkuEnablement`, `Get-SkuCatalogue`, `Get-QuotaUsage`, `Get-ZoneMappings` |
 | **Capacity reservations (guaranteed capacity)** | ✅ | ✅ | — | ✅ | ✅ | `Get-CapacityReservations` |
 | **AKS (managed Kubernetes)** | ✅ | ✅ | ✅¹ | ✅ | ✅ | `Get-AksInventory`, `Get-AksScaleHeadroom` |
+| **Networking (VNets, public IPs, NICs, LBs, NAT gateways)** | — | — | ✅ | — | ✅ | `Get-NetworkQuota` |
 | **PostgreSQL / MySQL Flexible Servers** | ✅ | ✅ | — | ✅ | ✅ | `Get-FlexServerZones` |
 | **Quota Groups (pooled vCPU quota)** | — | — | ✅ | — | ✅ | `Get-QuotaGroups`, `Get-QuotaGroupPlan` |
 | **Any zone-pinned resource / region footprint** | — | ✅ | — | ✅ | ✅ | `Get-ZonalResourceInventory`, `Get-ResourceInventory`, `Get-RegionFootprint` |
@@ -56,6 +57,7 @@ analysis** — see the note below for the one optional write tool.
 [VM vCPU quotas](https://learn.microsoft.com/en-us/azure/virtual-machines/quotas) ·
 [Quota Groups](https://learn.microsoft.com/en-us/azure/quotas/quota-groups) ·
 [capacity reservations](https://learn.microsoft.com/en-us/azure/virtual-machines/capacity-reservation-overview) ·
+[networking limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#networking-limits) ·
 [AKS reliability](https://learn.microsoft.com/en-us/azure/reliability/reliability-aks) ·
 [PostgreSQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-postgresql) /
 [MySQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-mysql) reliability.
