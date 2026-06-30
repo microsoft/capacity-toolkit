@@ -91,6 +91,20 @@ compares each plan's current instance count to its documented ceiling. True API-
 SKUs without a fixed ceiling (Consumption, Flex Consumption) are flagged `HasUnknownLimit` rather than
 given a fabricated limit. The standing caveat applies: quota is not guaranteed physical capacity.
 
+## Storage quota — account count, and why disk capacity is inventory not quota
+
+The number of **storage accounts per subscription per region** is a real, adjustable Azure quota
+([default 250](https://learn.microsoft.com/en-us/azure/storage/common/scalability-targets-standard-account))
+and a common, silent blocker for storage-heavy or multi-tenant platforms. `Get-StorageQuota.ps1`
+reads the regional storage usage API (behind `az storage account show-usage`) and reports
+`StorageAccounts` with Used / Limit / Available / `PctUsed` and an OK / NearLimit / AtLimit flag.
+Managed-disk *capacity* is a different story: Azure exposes **no general per-subscription managed-disk
+capacity quota usage API** the way it does for compute vCPUs, so the optional
+`-IncludeDiskCapacityInventory` rows sum provisioned `diskSizeGB` from Resource Graph and are labelled
+`IsQuota=False` / `Informational` with a blank limit — they are an inventory aid, never a compliance
+signal. (Disk SKU *availability* is `Microsoft.Compute/skus` metadata; per-disk size maxima are
+documented per-resource constants.) Quota cleared is still not capacity guaranteed.
+
 ## Regional vs zonal enablement
 
 A SKU's availability has **two independent signals**:

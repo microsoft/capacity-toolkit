@@ -8,6 +8,15 @@ All notable changes to this project are documented here. The format is based on
 
 ### Added
 
+- **Storage quota visibility** (`Get-StorageQuota.ps1`) — a read-only collector that reports the
+  per-subscription, per-region **storage-account count** quota (the data behind
+  `az storage account show-usage`, default limit 250) with used / limit / available / `PctUsed` and an
+  OK / NearLimit / AtLimit flag (threshold via `-NearLimitPct`, default 80). Optionally
+  (`-IncludeDiskCapacityInventory`) it adds an **informational** managed-disk capacity inventory —
+  total provisioned GiB by region and disk SKU, summed from Resource Graph — explicitly flagged
+  `IsQuota=False` / `Informational` with a blank limit, because Azure exposes no general
+  per-subscription managed-disk capacity quota usage API. Supports `-Location`, `-AllLocations` and the
+  standard subscription selectors. Reader-only. Resolves #14.
 - **App Service quota visibility** (`Get-AppServiceQuota.ps1`) — a read-only collector that joins App
   Service Plan inventory (Resource Graph) with the subscription/region
   `Microsoft.Web/locations/{loc}/usages` and per-plan `Microsoft.Web/serverfarms/{name}/usages` APIs
