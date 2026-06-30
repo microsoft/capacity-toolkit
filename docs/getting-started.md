@@ -22,6 +22,7 @@ This page takes you from zero to a rendered capacity dashboard.
 | Capacity reservation inventory | **Reader** | ARM read of `Microsoft.Compute/capacityReservationGroups`; shared groups need Reader on the owning scope |
 | AKS scale-headroom check | **Reader** | joins Resource Graph (node pools) + `Microsoft.Compute/skus` + `az vm list-usage` — all subscription reads |
 | Network quota (regional usages) | **Reader** | `Microsoft.Network/locations/{loc}/usages` (via `az network list-usages`) |
+| App Service quota (regional + per-plan usages) | **Reader** | Resource Graph (plans) + `Microsoft.Web/locations/{loc}/usages` + `Microsoft.Web/serverfarms/{name}/usages` |
 | Activity-log error scan | **Reader** | for watching reconciles / allocation errors |
 | Region footprint / multi-region compare | **Reader** | Resource Graph + per-region skus read |
 | Quota group (shared pool) read | **Management-group Reader** | subscription Reader is *not* enough |

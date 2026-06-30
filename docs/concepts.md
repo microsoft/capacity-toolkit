@@ -75,6 +75,22 @@ sub-counters (`…PerVirtualNetwork`) are flagged `PerResourceScope` so they are
 saturation scan of every VNet. As everywhere else in the toolkit, quota cleared is not capacity
 guaranteed.
 
+## App Service quota — plan limits and scale-out ceilings
+
+App Service capacity pressure is invisible to the compute-vCPU view: an App Service Plan can hit its
+per-region / per-resource-group plan limit, or a dedicated plan can reach its **tier scale-out
+instance ceiling** (Basic 3, Standard 10, Premium v1 20, Premium v2/v3/v4 30, Isolated 100), and a
+deploy or scale-out fails. `Get-AppServiceQuota.ps1` reads three sources the platform already exposes —
+App Service Plans (Resource Graph), the subscription/region
+[`Microsoft.Web/locations/{loc}/usages`](https://learn.microsoft.com/en-us/rest/api/appservice/get-usages-in-location/list)
+API, and per-plan
+[`serverfarms/{name}/usages`](https://learn.microsoft.com/en-us/rest/api/appservice/app-service-plans/list-usages) —
+and emits three row scopes: `SubscriptionRegion`, `AppServicePlan`, and an `InventoryDerived` row that
+compares each plan's current instance count to its documented ceiling. True API-reported quota rows
+(`IsTrueQuota=True`) are kept distinct from documented/inventory rows via the `LimitBasis` column, and
+SKUs without a fixed ceiling (Consumption, Flex Consumption) are flagged `HasUnknownLimit` rather than
+given a fabricated limit. The standing caveat applies: quota is not guaranteed physical capacity.
+
 ## Regional vs zonal enablement
 
 A SKU's availability has **two independent signals**:

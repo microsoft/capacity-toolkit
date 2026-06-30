@@ -8,6 +8,17 @@ All notable changes to this project are documented here. The format is based on
 
 ### Added
 
+- **App Service quota visibility** (`Get-AppServiceQuota.ps1`) — a read-only collector that joins App
+  Service Plan inventory (Resource Graph) with the subscription/region
+  `Microsoft.Web/locations/{loc}/usages` and per-plan `Microsoft.Web/serverfarms/{name}/usages` APIs
+  (api-version `2025-05-01`). Emits three row scopes — `SubscriptionRegion`, `AppServicePlan`, and an
+  `InventoryDerived` row comparing each plan's current instance count to its documented tier scale-out
+  ceiling (Basic 3 / Standard 10 / Premium v1 20 / Premium v2-v4 30 / Isolated 100) — with
+  used / limit / available / `PctUsed`, `NearLimit` / `AtLimit` and `PlanAtInstanceCeiling` flags.
+  True API-reported quota rows (`IsTrueQuota=True`) are kept distinct from documented/inventory rows via
+  `LimitBasis`; SKUs without a fixed ceiling (Consumption / Flex Consumption) are flagged
+  `HasUnknownLimit` rather than given a fabricated limit. Supports `-Location`, `-AllLocations` and the
+  standard subscription selectors. Reader-only. Resolves #7.
 - **Network quota visibility** (`Get-NetworkQuota.ps1`) — a read-only collector that reports
   per-subscription, per-region **Microsoft.Network** usage vs limit (the data behind
   `az network list-usages` / the `Microsoft.Network/locations/{loc}/usages` API): Virtual Networks,
