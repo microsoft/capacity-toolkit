@@ -43,7 +43,7 @@ Output is a set of CSVs plus one **self-contained interactive HTML dashboard**.
 
 | Capability | Minimum role |
 |---|---|
-| SKU / zonal enablement, zone mapping, quota/usage, AKS & resource inventory, AKS scale-headroom, capacity reservations, network quota, App Service quota, storage quota, PaaS (SQL/Cosmos) quota | **Reader** on the target subscriptions |
+| SKU / zonal enablement, zone mapping, quota/usage, AKS & resource inventory, AKS scale-headroom, capacity reservations, network quota, App Service quota, storage quota, PaaS (SQL/Cosmos) quota, subscription/RG structural limits | **Reader** on the target subscriptions |
 | Quota groups (pooled quota) | **Reader** + **management-group read** |
 | Spot placement score (allocation-likelihood) | **Reader** + **Compute Recommendations Role** (read-only `placementScores/generate/action`) |
 

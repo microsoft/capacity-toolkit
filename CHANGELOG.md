@@ -8,6 +8,19 @@ All notable changes to this project are documented here. The format is based on
 
 ### Added
 
+- **Subscription / RG structural-limit visibility** (`Get-SubscriptionLimits.ps1`) — a read-only
+  collector for ARM control-plane limits that silently block deployments but are **not** capacity
+  quotas. It counts live objects via Azure Resource Graph and the ARM control plane and compares
+  each against the documented limit on Microsoft Learn: resource groups per subscription (vs 980),
+  tags applied to the subscription (vs 50), and resources per resource group per type (vs 800,
+  near/at-limit rows only). Opt-in switches add tags-per-resource density (`-IncludeTagDensity`,
+  vs 50), subscription deployment history per location and distinct deployment locations
+  (`-IncludeDeploymentHistory`, vs 800 / 10), role assignments at/below the subscription scope
+  (`-IncludeRoleAssignments`, vs the fixed 4000), and an Informational resources-per-region
+  inventory (`-IncludeRegionInventory`). Every row carries `LimitSource=MicrosoftLearnDocumented`,
+  `IsTrueQuota=False` and a `DocReference` to the exact Learn article — these are documented ARM
+  constants, not adjustable capacity quotas, and they do **not** feed the compute-only quota-groups
+  feature. Reader-only. Resolves #16.
 - **PaaS quota visibility** (`Get-PaasQuota.ps1`) — a read-only collector for the data-PaaS tier.
   **Azure SQL** is reported as true quota from the `Microsoft.Sql` usage APIs: subscription/region
   counters (`ServerQuota`, `VCoreQuota`, `RegionalVCoreQuotaForSQLDBAndDW`, Managed Instance vCore
