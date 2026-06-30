@@ -2,7 +2,8 @@
 
 A reusable, **read-only-by-default** toolkit for validating **regional / zonal SKU enablement, quota,
 capacity, zonal resilience and AKS / database footprint** in any Azure tenant — the analysis side
-uses nothing more than **Reader** access. It shows you, in concrete numbers, what is actually enabled
+uses nothing more than **Reader** access (Spot placement is the one exception — it needs the
+read-only Compute Recommendations Role). It shows you, in concrete numbers, what is actually enabled
 in a region when you hit regional capacity or availability-zone constraints. One **opt-in** tool can
 also provision quota groups (see [Commands reference](commands.md) and the quota-groups guide).
 
@@ -15,6 +16,9 @@ also provision quota groups (see [Commands reference](commands.md) and the quota
 - *How many AKS clusters do we have, where, and on what node SKUs?*
 - *Which regions do we run in today, and is region X a viable alternative to deploy/move to?*
 - *Do we have quota groups, how are they designed, and is there pooled headroom?*
+- *Am I about to hit a non-compute limit — public IPs, NICs, load balancers, storage accounts, App Service plans, SQL/Cosmos throughput, resource groups, role assignments?*
+- *Do we hold guaranteed (reserved) capacity, and is it actually being used?*
+- *Is there actually Spot capacity to place SKU X in region/zone Y right now (placement score)?*
 - *Draft me the support request to get SKU X enabled regionally and in AZ01/AZ02/AZ03.*
 
 ## Documentation map
@@ -36,8 +40,9 @@ also provision quota groups (see [Commands reference](commands.md) and the quota
 - **Read-only by default.** Every analysis script only reads; nothing is created, modified or
   deleted, and the only writes are local CSV / HTML / JSON files under `output/`. The one
   exception is the opt-in `Deploy-QuotaGroups.ps1` rollout tool (see the quota-groups guide).
-- **Reader access** is enough for everything except quota-group reads (management-group read) and
-  `kubectl` inspection (Cluster User/Admin — out of scope).
+- **Reader access** is enough for everything except quota-group reads (management-group read),
+  Spot placement scores (the read-only Compute Recommendations Role) and `kubectl` inspection
+  (Cluster User/Admin — out of scope).
 - **Self-contained output.** CSVs and a single interactive HTML dashboard that opens offline.
 
 See the repository [README](../README.md) for a one-minute overview and the
