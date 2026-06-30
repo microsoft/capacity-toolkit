@@ -8,6 +8,17 @@ All notable changes to this project are documented here. The format is based on
 
 ### Added
 
+- **Network quota visibility** (`Get-NetworkQuota.ps1`) — a read-only collector that reports
+  per-subscription, per-region **Microsoft.Network** usage vs limit (the data behind
+  `az network list-usages` / the `Microsoft.Network/locations/{loc}/usages` API): Virtual Networks,
+  Public IP Addresses, Network Interfaces, Load Balancers, NAT Gateways and the rest. Networking quota
+  is a common, silent deployment blocker — you cannot create a VM if the subscription is out of public
+  IPs or NICs in the region, regardless of compute headroom. Each counter is emitted with
+  used / limit / available / `PctUsed` and `NearLimit` / `AtLimit` flags (threshold via
+  `-NearLimitPct`, default 80). Counters the API returns with the placeholder `2147483647` limit are
+  marked `IsUnbounded` (no fabricated math); per-VNet sub-counters (`…PerVirtualNetwork`) are flagged
+  `PerResourceScope`. Supports `-Location`, `-AllLocations`, and the standard subscription selectors.
+  Reader-only. Resolves #13.
 - **AKS scale-headroom check** (`Get-AksScaleHeadroom.ps1`) — a read-only derivation that answers
   "*if every node pool scaled to its autoscaler `maxCount`, would we run out of family quota?*" It
   joins data the toolkit already reads — AKS node pools (Resource Graph), `Microsoft.Compute/skus`
