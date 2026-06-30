@@ -47,11 +47,13 @@ analysis** — see the note below for the one optional write tool.
 | **Networking (VNets, public IPs, NICs, LBs, NAT gateways)** | — | — | ✅ | — | ✅ | `Get-NetworkQuota` |
 | **App Service (Microsoft.Web plans)** | — | — | ✅ | — | ✅ | `Get-AppServiceQuota` |
 | **Storage (account count + disk inventory)** | — | — | ✅ | — | ✅ | `Get-StorageQuota` |
+| **Data PaaS — Azure SQL + Cosmos DB** | — | — | ✅² | — | ✅ | `Get-PaasQuota` |
 | **PostgreSQL / MySQL Flexible Servers** | ✅ | ✅ | — | ✅ | ✅ | `Get-FlexServerZones` |
 | **Quota Groups (pooled vCPU quota)** | — | — | ✅ | — | ✅ | `Get-QuotaGroups`, `Get-QuotaGroupPlan` |
 | **Any zone-pinned resource / region footprint** | — | ✅ | — | ✅ | ✅ | `Get-ZonalResourceInventory`, `Get-ResourceInventory`, `Get-RegionFootprint` |
 
 ¹ AKS node pools draw on the same VM-family quota as compute, so quota coverage is via the compute families.
+² Azure SQL exposes true subscription/region + per-server quota; Cosmos DB has no subscription/region RU/s quota API, so Cosmos coverage is throughput **inventory** (clearly flagged informational).
 
 📚 **Learn more (official Microsoft docs):**
 [availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview) ·
@@ -62,6 +64,8 @@ analysis** — see the note below for the one optional write tool.
 [networking limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#networking-limits) ·
 [App Service limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits) ·
 [Storage account limits](https://learn.microsoft.com/en-us/azure/storage/common/scalability-targets-standard-account) ·
+[Azure SQL limits](https://learn.microsoft.com/en-us/azure/azure-sql/database/resource-limits-logical-server) ·
+[Cosmos DB limits](https://learn.microsoft.com/en-us/azure/cosmos-db/concepts-limits) ·
 [AKS reliability](https://learn.microsoft.com/en-us/azure/reliability/reliability-aks) ·
 [PostgreSQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-postgresql) /
 [MySQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-mysql) reliability.

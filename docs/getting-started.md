@@ -24,6 +24,7 @@ This page takes you from zero to a rendered capacity dashboard.
 | Network quota (regional usages) | **Reader** | `Microsoft.Network/locations/{loc}/usages` (via `az network list-usages`) |
 | App Service quota (regional + per-plan usages) | **Reader** | Resource Graph (plans) + `Microsoft.Web/locations/{loc}/usages` + `Microsoft.Web/serverfarms/{name}/usages` |
 | Storage quota (account count + disk inventory) | **Reader** | `az storage account show-usage` + (optional) Resource Graph disk sum |
+| PaaS quota (Azure SQL + Cosmos DB) | **Reader** | `Microsoft.Sql/locations/{loc}/usages` + `servers/{name}/usages`; Cosmos `databaseAccounts` + (optional) SQL-API throughput reads |
 | Activity-log error scan | **Reader** | for watching reconciles / allocation errors |
 | Region footprint / multi-region compare | **Reader** | Resource Graph + per-region skus read |
 | Quota group (shared pool) read | **Management-group Reader** | subscription Reader is *not* enough |
