@@ -119,6 +119,21 @@ subscription/region RU/s quota usage API, so the script reports the per-account 
 database and container as **inventory** — never a fabricated quota. None of this feeds the
 compute-only quota-groups feature. As always, quota is not guaranteed physical capacity.
 
+## Subscription &amp; resource-group structural limits — documented, not a usage API
+
+Many "quota exceeded" surprises are not capacity quotas at all — they are fixed **ARM structural
+limits** on object counts: 980 resource groups per subscription, 800 resources per resource group
+per type, 50 tags per scope, 800 subscription deployments per location (and 10 distinct locations),
+4000 role assignments per subscription. Azure exposes no per-subscription *usage* API for these, so
+`Get-SubscriptionLimits.ps1` counts the live objects (via Azure Resource Graph and the ARM control
+plane) and compares each count against the value **documented on Microsoft Learn**. Because the
+limit is a documented constant rather than an API reading, every row carries
+`LimitSource=MicrosoftLearnDocumented`, `IsTrueQuota=False` and a `DocReference` link — most of
+these limits are fixed and cannot be raised by a quota request, and none of them feed the
+compute-only quota-groups feature. High-cardinality checks (resources per RG/type, tag density)
+emit only near/at-limit rows; region inventory is purely informational. A structural limit is a
+ceiling on object count, not a guarantee of physical capacity.
+
 ## Regional vs zonal enablement
 
 A SKU's availability has **two independent signals**:
