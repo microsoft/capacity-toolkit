@@ -8,6 +8,19 @@ All notable changes to this project are documented here. The format is based on
 
 ### Added
 
+- **PaaS quota visibility** (`Get-PaasQuota.ps1`) — a read-only collector for the data-PaaS tier.
+  **Azure SQL** is reported as true quota from the `Microsoft.Sql` usage APIs: subscription/region
+  counters (`ServerQuota`, `VCoreQuota`, `RegionalVCoreQuotaForSQLDBAndDW`, Managed Instance vCore
+  quotas, etc.) and per-logical-server DTU quota (`server_dtu_quota`), each emitted generically with
+  used / limit / available / `PctUsed` and `OK` / `NearLimit` / `AtLimit` flags; free-tier /
+  promotional countdown counters (`*Free*`, `*DaysLeft`) are classified `Informational` so a healthy
+  "full" countdown is not mistaken for exhaustion. **Cosmos DB** has no verified subscription/region
+  RU/s quota API, so it is reported honestly as inventory: the per-account configured
+  `totalThroughputLimit` (a real limit only when positive) and, optionally
+  (`-IncludeCosmosThroughputInventory`), provisioned RU/s per SQL-API database and container, all
+  flagged `IsInformational`. Scope via `-Service AzureSQL|CosmosDB|All`; supports `-Location`,
+  `-AllLocations` and the standard subscription selectors. Does **not** feed the compute-only
+  quota-groups feature. Reader-only. Resolves #15.
 - **Storage quota visibility** (`Get-StorageQuota.ps1`) — a read-only collector that reports the
   per-subscription, per-region **storage-account count** quota (the data behind
   `az storage account show-usage`, default limit 250) with used / limit / available / `PctUsed` and an

@@ -105,6 +105,20 @@ capacity quota usage API** the way it does for compute vCPUs, so the optional
 signal. (Disk SKU *availability* is `Microsoft.Compute/skus` metadata; per-disk size maxima are
 documented per-resource constants.) Quota cleared is still not capacity guaranteed.
 
+## PaaS quota — true quota for SQL, honest inventory for Cosmos
+
+The data-PaaS tier splits cleanly into "has a real quota API" and "doesn't". **Azure SQL** exposes
+genuine quota through the `Microsoft.Sql` usage APIs — subscription/region counters (`ServerQuota`,
+`VCoreQuota`, `RegionalVCoreQuotaForSQLDBAndDW`, Managed Instance vCore quotas) and per-logical-server
+DTU quota (`server_dtu_quota`) — so `Get-PaasQuota.ps1` emits each row as true quota
+(`IsInformational=False`). It deliberately classifies free-tier / promotional **countdown** counters
+(`*Free*`, `*DaysLeft`) as informational, because a "full" countdown is healthy, not exhausted —
+flagging those as at-limit would be a false alarm. **Cosmos DB** is the opposite: there is no verified
+subscription/region RU/s quota usage API, so the script reports the per-account configured
+`totalThroughputLimit` (a real limit only when positive) and, optionally, provisioned RU/s per
+database and container as **inventory** — never a fabricated quota. None of this feeds the
+compute-only quota-groups feature. As always, quota is not guaranteed physical capacity.
+
 ## Regional vs zonal enablement
 
 A SKU's availability has **two independent signals**:
