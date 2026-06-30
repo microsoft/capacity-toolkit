@@ -272,6 +272,14 @@ Authoritative references for the concepts above (Microsoft Learn):
 | VM sizes / SKU families | [Virtual machine sizes overview](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview) |
 | Spot / low-priority capacity | [Azure Spot Virtual Machines](https://learn.microsoft.com/en-us/azure/virtual-machines/spot-vms) |
 | Quota Groups (pooled quota) | [Share quota across subscriptions with Azure Quota Groups](https://learn.microsoft.com/en-us/azure/quotas/quota-groups) |
+| Spot placement score (allocation likelihood) | [Spot Placement Score](https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/spot-placement-score) |
+| Networking limits | [Networking limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#networking-limits) |
+| App Service limits | [App Service limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits) |
+| Storage account limits | [Scalability targets for standard storage accounts](https://learn.microsoft.com/en-us/azure/storage/common/scalability-targets-standard-account) |
+| Azure SQL limits | [Resource limits for logical SQL servers](https://learn.microsoft.com/en-us/azure/azure-sql/database/resource-limits-logical-server) |
+| Cosmos DB limits | [Azure Cosmos DB service quotas](https://learn.microsoft.com/en-us/azure/cosmos-db/concepts-limits) |
+| Subscription &amp; resource-group structural limits | [Azure subscription and service limits](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits) |
+| Azure RBAC limits (role assignments) | [Troubleshoot Azure RBAC limits](https://learn.microsoft.com/en-us/azure/role-based-access-control/troubleshoot-limits) |
 | AKS reliability & availability zones | [Reliability in Azure Kubernetes Service](https://learn.microsoft.com/en-us/azure/reliability/reliability-aks) |
 | PostgreSQL Flexible Server reliability / HA | [Reliability in Azure Database for PostgreSQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-postgresql) |
 | MySQL Flexible Server reliability / HA | [Reliability in Azure Database for MySQL](https://learn.microsoft.com/en-us/azure/reliability/reliability-database-mysql) |

@@ -8,7 +8,8 @@
 [![Read-only by default](https://img.shields.io/badge/Mutations-opt--in%20only-important.svg)](docs/quota-groups.md)
 
 > **Read-only by default** — analysis tools and a self-contained dashboard for Azure regional
-> capacity, availability-zone enablement, and quota, runnable with only Reader access; plus one
+> capacity, availability-zone enablement, and quota, runnable with Reader access (only Spot
+> placement needs one extra read-only role); plus one
 > **opt-in** tool to provision quota groups.
 
 A **read-only-by-default** toolkit that shows you, in concrete numbers, what is actually enabled in
@@ -31,17 +32,20 @@ and AKS resilience — packaged as generic scripts plus a single, self-contained
 - *How many AKS clusters do we have, where, and on what node SKUs?*
 - *Which regions do we run in, and is region X a viable alternative to deploy/move to?*
 - *Do we have quota groups, how are they designed, and is there pooled headroom?*
+- *Am I about to hit a non-compute limit — public IPs, NICs, load balancers, storage accounts, App Service plans, SQL/Cosmos throughput, resource groups, role assignments?*
+- *Do we hold guaranteed (reserved) capacity, and is it actually being used?*
 - *Is there actually Spot capacity to place SKU X in region/zone Y right now (placement score)?*
 - *Draft me the support request to enable SKU X regionally and in AZ01/AZ02/AZ03.*
 
 ## Services & coverage
 
-What the toolkit looks at, and along which dimensions. Everything here is **Reader-only
-analysis** — see the note below for the one optional write tool.
+What the toolkit looks at, and along which dimensions. Everything here is **read-only
+analysis** (Reader is enough for all of it except Spot placement — see footnote ⁴) — see the note below for the one optional write tool.
 
 | Service / area | SKU & region | AZ enablement | Quota & headroom | Resilience / HA | Inventory | Key scripts |
 |---|:---:|:---:|:---:|:---:|:---:|---|
 | **Compute — VMs & VM Scale Sets** | ✅ | ✅ | ✅ | ✅ | ✅ | `Get-UsedSkus`, `Scan-SkuEnablement`, `Get-SkuCatalogue`, `Get-QuotaUsage`, `Get-ZoneMappings` |
+| **Spot placement (allocation likelihood)** | ✅ | ✅ | ✅⁴ | — | — | `Get-SpotPlacementScore` |
 | **Capacity reservations (guaranteed capacity)** | ✅ | ✅ | — | ✅ | ✅ | `Get-CapacityReservations` |
 | **AKS (managed Kubernetes)** | ✅ | ✅ | ✅¹ | ✅ | ✅ | `Get-AksInventory`, `Get-AksScaleHeadroom` |
 | **Networking (VNets, public IPs, NICs, LBs, NAT gateways)** | — | — | ✅ | — | ✅ | `Get-NetworkQuota` |
@@ -56,6 +60,7 @@ analysis** — see the note below for the one optional write tool.
 ¹ AKS node pools draw on the same VM-family quota as compute, so quota coverage is via the compute families.
 ² Azure SQL exposes true subscription/region + per-server quota; Cosmos DB has no subscription/region RU/s quota API, so Cosmos coverage is throughput **inventory** (clearly flagged informational).
 ³ Subscription / resource-group structural limits (resource groups, tags, resources per type, deployments, role assignments) are **documented ARM constants**, not adjustable capacity quotas — counted live and compared against the cited limits.
+⁴ Spot placement scores are an **allocation-likelihood signal**, not a quota. This is the one analysis tool that needs more than Reader: the read-only **Compute Recommendations Role** (`placementScores/generate/action` — no mutations).
 
 📚 **Learn more (official Microsoft docs):**
 [availability zones](https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview) ·

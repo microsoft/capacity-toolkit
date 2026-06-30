@@ -28,7 +28,7 @@ this run* and confirms after a `-WhatIf` preview.
 
 ## 1. What this toolkit does
 
-Answers, in concrete numbers and with only Reader access:
+Answers, in concrete numbers and with only Reader access (Spot placement scores additionally need the read-only Compute Recommendations Role):
 - Is a VM SKU enabled **regionally**, and in which **availability zones**?
 - Which subscriptions are **missing** enablement?
 - How much **quota / headroom** per VM family? Where is it stranded?
@@ -36,6 +36,9 @@ Answers, in concrete numbers and with only Reader access:
 - How many **AKS clusters**, where, on what node SKUs?
 - Which regions do we run in, and is region X a **viable alternative** to deploy/move to?
 - Do we have **quota groups**, how are they designed, and is there pooled headroom?
+- Am I about to hit a **non-compute limit** — public IPs, NICs, load balancers, storage accounts, App Service plans, SQL/Cosmos throughput, resource groups, role assignments?
+- Do we hold **guaranteed (reserved) capacity**, and is it actually being used?
+- Is there actually **Spot capacity** to place SKU X in region/zone Y right now (placement score)?
 
 Output is a set of CSVs plus one **self-contained interactive HTML dashboard**.
 

@@ -124,6 +124,13 @@ All notable changes to this project are documented here. The format is based on
   of each concept (availability zones, regions, vCPU quotas, quota groups, VM sizes, Spot, Resource
   Graph, AKS / PostgreSQL / MySQL reliability) plus a consolidated "Further reading" table in
   `concepts.md` and pointers from the README, dashboard and quota-groups guides.
+- **Documentation aligned across the expanded feature set.** The README services matrix now lists
+  Spot placement (`Get-SpotPlacementScore`) with an RBAC footnote; the "what it answers" lists in
+  the README, `docs/index.md` and `AGENTS.md` now cover the non-compute quota surface (networking,
+  App Service, storage, SQL/Cosmos, subscription/RG limits), capacity reservations and Spot; the
+  `concepts.md` "Further reading" table gains Learn links for those services; and the
+  "Reader-only" claims are clarified to note Spot placement needs the read-only Compute
+  Recommendations Role.
 
 ## [0.1.0] - 2026-06-22
 
