@@ -1,3 +1,8 @@
+---
+title: Dashboard guide
+nav_order: 5
+---
+
 # Dashboard guide
 
 `New-CapacityDashboard.ps1` (or `New-CapacityReport.ps1 -Dashboard`) renders a single,

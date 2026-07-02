@@ -6,6 +6,15 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+### Added
+
+- **Documentation site** (<https://microsoft.github.io/capacity-toolkit/>) — the existing `docs/`
+  guides are now published as a searchable GitHub Pages site using the
+  [`just-the-docs`](https://just-the-docs.com/) Jekyll theme (the same approach as the
+  [FinOps toolkit](https://microsoft.github.io/finops-toolkit/)). Pages carry navigation
+  front-matter, the site is served from `/docs` on `main`, and a `docs/Gemfile` supports local
+  preview (`bundle exec jekyll serve`). No content moved — the Markdown remains the source of truth.
+
 ## [0.2.0] - 2026-07-02
 
 ### Added

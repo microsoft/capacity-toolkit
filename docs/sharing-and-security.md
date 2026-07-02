@@ -1,3 +1,8 @@
+---
+title: Sharing & security
+nav_order: 7
+---
+
 # Sharing & security
 
 This toolkit is safe to run in restricted environments, and its output is safe to share once
@@ -9,7 +14,7 @@ sanitized. This page explains *why* it's safe and *what* to do before sharing an
   `az vm list-usage`, Resource Graph queries, activity-log list. Nothing is created, modified or
   deleted, and the only writes are local files under `output/`. The single exception is the opt-in
   `Deploy-QuotaGroups.ps1` rollout tool (it provisions quota groups, supports `-WhatIf`, and is run
-  only when you explicitly choose to). The full guardrails are in [`AGENTS.md`](../AGENTS.md).
+  only when you explicitly choose to). The full guardrails are in [`AGENTS.md`](https://github.com/microsoft/capacity-toolkit/blob/main/AGENTS.md).
 - **No secrets stored.** The toolkit stores no credentials; it relies entirely on the operator's own
   `az login` context.
 - **Self-contained outputs.** CSVs and the HTML dashboard are plain files with no external calls —
@@ -49,4 +54,4 @@ Confirm an `output\README.md` placeholder remains so the folder is preserved in 
 ## Reporting a security issue
 
 Do **not** open a public GitHub issue for security vulnerabilities. Follow the process in
-[`SECURITY.md`](../SECURITY.md) (report to the Microsoft Security Response Center).
+[`SECURITY.md`](https://github.com/microsoft/capacity-toolkit/blob/main/SECURITY.md) (report to the Microsoft Security Response Center).

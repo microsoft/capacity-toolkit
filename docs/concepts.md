@@ -1,3 +1,8 @@
+---
+title: Concepts
+nav_order: 3
+---
+
 # Concepts
 
 Understand these before you read the numbers — they are the difference between a correct and a

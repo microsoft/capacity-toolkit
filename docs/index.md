@@ -1,3 +1,9 @@
+---
+title: Home
+nav_order: 1
+permalink: /
+---
+
 # Azure Capacity & Enablement Toolkit
 
 A reusable, **read-only-by-default** toolkit for validating **regional / zonal SKU enablement, quota,
@@ -32,7 +38,7 @@ also provision quota groups (see [Commands reference](commands.md) and the quota
 | [Troubleshooting & FAQ](troubleshooting.md) | Common questions, platform gotchas, best practices |
 | [Sharing & security](sharing-and-security.md) | Read-only-by-default guarantees and how to sanitize before sharing |
 
-> **Automating it with an AI agent?** [`AGENTS.md`](../AGENTS.md) tells GitHub Copilot CLI (or any
+> **Automating it with an AI agent?** [`AGENTS.md`](https://github.com/microsoft/capacity-toolkit/blob/main/AGENTS.md) tells GitHub Copilot CLI (or any
 > agent) how to drive the toolkit safely against a tenant.
 
 ## At a glance
@@ -45,5 +51,5 @@ also provision quota groups (see [Commands reference](commands.md) and the quota
   (Cluster User/Admin — out of scope).
 - **Self-contained output.** CSVs and a single interactive HTML dashboard that opens offline.
 
-See the repository [README](../README.md) for a one-minute overview and the
-[LICENSE](../LICENSE) (MIT).
+See the repository [README](https://github.com/microsoft/capacity-toolkit/blob/main/README.md) for a one-minute overview and the
+[LICENSE](https://github.com/microsoft/capacity-toolkit/blob/main/LICENSE) (MIT).
