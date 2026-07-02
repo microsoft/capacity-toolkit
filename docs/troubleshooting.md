@@ -1,3 +1,8 @@
+---
+title: Troubleshooting & FAQ
+nav_order: 8
+---
+
 # Troubleshooting & FAQ
 
 Common questions and platform gotchas you may hit when running the toolkit. Most of these are

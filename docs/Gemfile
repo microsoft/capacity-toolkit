@@ -1,0 +1,14 @@
+source "https://rubygems.org"
+
+# Local preview of the GitHub Pages documentation site (docs/).
+# GitHub Pages builds the published site itself — this Gemfile is only so
+# contributors can preview locally:
+#
+#   cd docs
+#   bundle install
+#   bundle exec jekyll serve
+#
+# The site uses the just-the-docs remote theme; see docs/_config.yml.
+gem "github-pages", group: :jekyll_plugins
+gem "jekyll-remote-theme"
+gem "webrick"

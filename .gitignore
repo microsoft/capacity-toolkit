@@ -20,3 +20,13 @@ Thumbs.db
 # Node tooling for branding asset generation (regenerate with `npm install`)
 node_modules/
 assets/branding/node_modules/
+
+# Microsoft Guardian (local security-scan artifacts; not part of the repo)
+.gdn/
+
+# Jekyll / docs-site local preview build output
+docs/_site/
+docs/.jekyll-cache/
+docs/.jekyll-metadata
+docs/Gemfile.lock
+docs/vendor/

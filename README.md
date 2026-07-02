@@ -4,9 +4,13 @@
 </h1>
 
 [![CI](https://github.com/microsoft/capacity-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/microsoft/capacity-toolkit/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-microsoft.github.io-blue.svg)](https://microsoft.github.io/capacity-toolkit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Access: Reader](https://img.shields.io/badge/Azure-Reader%20for%20analysis-success.svg)](docs/getting-started.md)
 [![Read-only by default](https://img.shields.io/badge/Mutations-opt--in%20only-important.svg)](docs/quota-groups.md)
+
+> 📖 **Documentation site:** **<https://microsoft.github.io/capacity-toolkit/>** — the same guides
+> that live in [`docs/`](docs/), with search and navigation.
 
 > **Read-only by default** — analysis tools and a self-contained dashboard for Azure regional
 > capacity, availability-zone enablement, and quota, runnable with Reader access (only Spot

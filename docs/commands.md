@@ -1,3 +1,8 @@
+---
+title: Commands reference
+nav_order: 4
+---
+
 # Commands reference
 
 Every script lives in `scripts/` and dot-sources `scripts/Common.ps1`. Run them from the repo
