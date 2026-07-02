@@ -144,10 +144,11 @@ All notable changes to this project are documented here. The format is based on
 
 ### Fixed
 
-- **`Deploy-QuotaGroups.ps1` now runs under Windows PowerShell 5.1.** The opt-in rollout tool
-  used PowerShell 7-only ternary (`? :`) and null-coalescing (`??`) operators in seven places,
-  so it failed to even parse under 5.1 — the toolkit's stated compatibility target. All were
-  rewritten as 5.1-safe `if`/`else` expressions. Caught by the new CI parse gate.
+- **`Deploy-QuotaGroups.ps1` no longer breaks the Windows PowerShell 5.1 parser.** The opt-in
+  rollout tool used PowerShell 7-only ternary (`? :`) and null-coalescing (`??`) operators in
+  seven places, so it failed to even tokenise under 5.1 and tripped the new CI parse gate. All
+  were rewritten as 5.1-safe `if`/`else` expressions. (Executing a real rollout still requires
+  PowerShell 7+, as before — this only ensures the script parses cleanly everywhere.)
 - **`New-EnablementRequest.ps1` now parses under Windows PowerShell 5.1.** The file contained a
   single non-ASCII em-dash without a byte-order mark, which Windows PowerShell 5.1 decoded as
   ANSI and mis-tokenised, breaking the script. Replaced with an ASCII hyphen so the file stays
