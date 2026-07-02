@@ -99,7 +99,7 @@ function Invoke-Arm {
     )
     $url = "$script:Arm$Path"
     if ($url -notmatch 'api-version=') {
-        $sep = ($url -match '\?') ? '&' : '?'
+        $sep = if ($url -match '\?') { '&' } else { '?' }
         $url = "${url}${sep}api-version=$script:ApiVersionEffective"
     }
     $headers = @{ Authorization = "Bearer $(Get-ArmToken)"; 'Content-Type' = 'application/json' }
@@ -240,7 +240,7 @@ function Invoke-CreateGroups {
         $path = "/providers/Microsoft.Management/managementGroups/$mg/providers/Microsoft.Quota/groupQuotas/$($g.name)"
         $existing = Invoke-Arm -Method GET -Path $path -AllowNotFound
         if ($existing) { Write-Skip "Group '$($g.name)' already exists under MG '$mg'"; Add-Result 'CreateGroups' $g.name 'Exists'; continue }
-        $body = @{ properties = @{ displayName = ($g.displayName ?? $g.name) } }
+        $body = @{ properties = @{ displayName = $(if ($g.displayName) { $g.displayName } else { $g.name }) } }
         if ($PSCmdlet.ShouldProcess($g.name, "Create quota group under MG '$mg'")) {
             [void](Invoke-Arm -Method PUT -Path $path -Body $body)
             Write-Ok "Created group '$($g.name)' (display '$($g.displayName)') under MG '$mg'"
@@ -271,7 +271,7 @@ function Invoke-AddSubscriptions {
 function Invoke-SetGroupLimits {
     param([object]$Cfg)
     Write-Step "Submit group quota limit requests"
-    $rp = $Cfg.resourceProvider ?? 'Microsoft.Compute'
+    $rp = $(if ($Cfg.resourceProvider) { $Cfg.resourceProvider } else { 'Microsoft.Compute' })
     foreach ($g in $Cfg.groups) {
         if (-not $g.groupLimits) { continue }
         $mg = $g.managementGroupId
@@ -280,7 +280,7 @@ function Invoke-SetGroupLimits {
         foreach ($loc in $byLoc) {
             $values = @()
             foreach ($gl in $loc.Group) {
-                $values += @{ properties = @{ comment = ($gl.comment ?? "Set by Deploy-QuotaGroups"); limit = [int]$gl.limit; resourceName = $gl.resourceName } }
+                $values += @{ properties = @{ comment = $(if ($gl.comment) { $gl.comment } else { "Set by Deploy-QuotaGroups" }); limit = [int]$gl.limit; resourceName = $gl.resourceName } }
             }
             $path = "/providers/Microsoft.Management/managementGroups/$mg/providers/Microsoft.Quota/groupQuotas/$($g.name)/resourceProviders/$rp/groupQuotaLimits/$($loc.Name)"
             $body = @{ properties = @{ value = $values } }
@@ -297,7 +297,7 @@ function Invoke-SetGroupLimits {
 function Invoke-Allocate {
     param([object]$Cfg, [hashtable]$Map)
     Write-Step "Allocate quota from groups to subscriptions"
-    $rp = $Cfg.resourceProvider ?? 'Microsoft.Compute'
+    $rp = $(if ($Cfg.resourceProvider) { $Cfg.resourceProvider } else { 'Microsoft.Compute' })
     foreach ($g in $Cfg.groups) {
         if (-not $g.allocations) { continue }
         $mg = $g.managementGroupId
@@ -328,13 +328,13 @@ function Invoke-Allocate {
 # ---------------------------------------------------------------------------
 if (-not (Test-Path $ConfigPath)) { throw "Config file not found: $ConfigPath" }
 $Cfg = Get-Content $ConfigPath -Raw | ConvertFrom-Json
-$script:ApiVersionEffective = $ApiVersion ? $ApiVersion : ($Cfg.apiVersion ? $Cfg.apiVersion : '2025-09-01')
+$script:ApiVersionEffective = $(if ($ApiVersion) { $ApiVersion } elseif ($Cfg.apiVersion) { $Cfg.apiVersion } else { '2025-09-01' })
 
 Write-Step "Azure Quota Groups rollout"
 Write-Info "Config        : $ConfigPath"
 Write-Info "API version   : $script:ApiVersionEffective"
 Write-Info "Action        : $Action"
-Write-Info "Mode          : $(($WhatIfPreference) ? 'WHATIF (dry run)' : 'EXECUTE')"
+Write-Info "Mode          : $(if ($WhatIfPreference) { 'WHATIF (dry run)' } else { 'EXECUTE' })"
 
 # Context check
 $acct = az account show -o json 2>$null | ConvertFrom-Json

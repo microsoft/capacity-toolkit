@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-parse:
+    name: Parse (PS 5.1) + PSScriptAnalyzer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # The scripts must stay Windows PowerShell 5.1-safe. `shell: powershell` on
+      # windows-latest is Windows PowerShell 5.1, so a clean parse here proves 5.1
+      # compatibility (no ternary `? :`, no `??`, etc.).
+      - name: Parse all scripts under Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $files = Get-ChildItem -Path . -Recurse -Filter *.ps1 |
+              Where-Object { $_.FullName -notmatch '\\output\\|\\\.git\\' }
+          $failed = $false
+          foreach ($f in $files) {
+              $errs = $null
+              [System.Management.Automation.Language.Parser]::ParseFile($f.FullName, [ref]$null, [ref]$errs) | Out-Null
+              if ($errs) {
+                  $failed = $true
+                  Write-Host "::group::Parse errors in $($f.Name)"
+                  foreach ($e in $errs) {
+                      $line = $e.Extent.StartLineNumber
+                      Write-Host "::error file=$($f.FullName),line=$line::$($e.Message)"
+                  }
+                  Write-Host "::endgroup::"
+              }
+          }
+          if ($failed) { throw "One or more scripts failed to parse under Windows PowerShell 5.1." }
+          Write-Host "All $($files.Count) script(s) parsed cleanly under Windows PowerShell 5.1."
+
+      - name: Scan for PowerShell 7-only syntax
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $paths = (Get-ChildItem -Recurse -Filter *.ps1 |
+              Where-Object { $_.FullName -notmatch '\\output\\|\\\.git\\' }).FullName
+          $hits = Select-String -Path $paths -Pattern '\?\?' -AllMatches
+          if ($hits) {
+              foreach ($h in $hits) {
+                  Write-Host "::error file=$($h.Path),line=$($h.LineNumber)::Null-coalescing '??' is not supported in Windows PowerShell 5.1"
+              }
+              throw "PowerShell 7-only syntax found."
+          }
+          Write-Host "No PowerShell 7-only syntax found."
+
+      - name: Install PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force -SkipPublisherCheck
+
+      - name: Run PSScriptAnalyzer
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $results = Invoke-ScriptAnalyzer -Path . -Recurse -Settings ./PSScriptAnalyzerSettings.psd1
+          if ($results) {
+              $results | Sort-Object Severity, ScriptName, Line |
+                  Format-Table Severity, RuleName, ScriptName, Line, Message -AutoSize | Out-String -Width 200 | Write-Host
+          }
+          $errors = @($results | Where-Object { $_.Severity -eq 'Error' })
+          $warnings = @($results | Where-Object { $_.Severity -eq 'Warning' })
+          Write-Host "PSScriptAnalyzer: $($errors.Count) error(s), $($warnings.Count) warning(s)."
+          foreach ($e in $errors) {
+              Write-Host "::error file=$($e.ScriptPath),line=$($e.Line)::[$($e.RuleName)] $($e.Message)"
+          }
+          foreach ($w in $warnings) {
+              Write-Host "::warning file=$($w.ScriptPath),line=$($w.Line)::[$($w.RuleName)] $($w.Message)"
+          }
+          if ($errors.Count -gt 0) { throw "PSScriptAnalyzer reported $($errors.Count) error-severity finding(s)." }
