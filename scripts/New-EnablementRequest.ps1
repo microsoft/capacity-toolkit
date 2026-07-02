@@ -118,7 +118,7 @@ if (-not $gaps) {
 } else {
     $md += "## Request summary"
     $md += ""
-    $md += "We request **Regional Enablement** and **Zonal Enablement** for the VM SKUs below in **$Location**, for the listed subscriptions and physical availability zones ($($TargetZones -join ', ')). Quota alone is not sufficient — please ensure the SKUs are unblocked at both the regional and the zonal level so capacity can be deployed."
+    $md += "We request **Regional Enablement** and **Zonal Enablement** for the VM SKUs below in **$Location**, for the listed subscriptions and physical availability zones ($($TargetZones -join ', ')). Quota alone is not sufficient - please ensure the SKUs are unblocked at both the regional and the zonal level so capacity can be deployed."
     $md += ""
     $md += "### Per-subscription requirements"
     $md += ""

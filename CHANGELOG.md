@@ -142,6 +142,17 @@ All notable changes to this project are documented here. The format is based on
   `Get-RegionFootprint.ps1` (the region set is recomputed as `$compareRegions` in the
   comparison pass) and an unused `$subCount` in `Get-SkuCatalogue.ps1`. No behaviour change.
 
+### Fixed
+
+- **`Deploy-QuotaGroups.ps1` now runs under Windows PowerShell 5.1.** The opt-in rollout tool
+  used PowerShell 7-only ternary (`? :`) and null-coalescing (`??`) operators in seven places,
+  so it failed to even parse under 5.1 — the toolkit's stated compatibility target. All were
+  rewritten as 5.1-safe `if`/`else` expressions. Caught by the new CI parse gate.
+- **`New-EnablementRequest.ps1` now parses under Windows PowerShell 5.1.** The file contained a
+  single non-ASCII em-dash without a byte-order mark, which Windows PowerShell 5.1 decoded as
+  ANSI and mis-tokenised, breaking the script. Replaced with an ASCII hyphen so the file stays
+  pure ASCII like the rest of the toolkit. Also caught by the new CI parse gate.
+
 ## [0.1.0] - 2026-06-22
 
 First release.
