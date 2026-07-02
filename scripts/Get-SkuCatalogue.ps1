@@ -151,7 +151,6 @@ foreach ($s in $subs) {
     }
 }
 
-$subCount = $subs.Count
 $rows = foreach ($f in ($fam.Keys | Sort-Object)) {
     $q = $famQuota[$f]
     $zp = ($fam[$f].Zones.GetEnumerator() | Sort-Object Value -Descending |

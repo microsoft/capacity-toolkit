@@ -3,6 +3,7 @@
   &nbsp;Azure Capacity &amp; Enablement Toolkit
 </h1>
 
+[![CI](https://github.com/microsoft/capacity-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/microsoft/capacity-toolkit/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Access: Reader](https://img.shields.io/badge/Azure-Reader%20for%20analysis-success.svg)](docs/getting-started.md)
 [![Read-only by default](https://img.shields.io/badge/Mutations-opt--in%20only-important.svg)](docs/quota-groups.md)

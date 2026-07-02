@@ -66,7 +66,6 @@ $aksByLoc = Invoke-Graph "resources | where type =~ 'microsoft.containerservice/
 $aksMap = @{}; $aksByLoc | ForEach-Object { $aksMap[$_.location] = [int]$_.AksClusters }
 
 $currentRegions = @($resByLoc.location)
-$allRegions     = @($currentRegions + $EvaluateRegions | Where-Object { $_ } | Select-Object -Unique)
 
 $footprint = foreach ($r in $resByLoc | Sort-Object { [int]$_.Resources } -Descending) {
     [pscustomobject]@{

@@ -6,8 +6,15 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-02
+
 ### Added
 
+- **Continuous integration** (`.github/workflows/ci.yml`) — runs on every push and pull
+  request to `main`: parses every script under **Windows PowerShell 5.1** (the toolkit's
+  compatibility target), scans for PowerShell 7-only syntax, and runs **PSScriptAnalyzer**
+  against a checked-in `PSScriptAnalyzerSettings.psd1`. The build fails on any parse error
+  or Error-severity finding; Warnings are surfaced as annotations for triage.
 - **Subscription / RG structural-limit visibility** (`Get-SubscriptionLimits.ps1`) — a read-only
   collector for ARM control-plane limits that silently block deployments but are **not** capacity
   quotas. It counts live objects via Azure Resource Graph and the ARM control plane and compares
@@ -131,6 +138,9 @@ All notable changes to this project are documented here. The format is based on
   `concepts.md` "Further reading" table gains Learn links for those services; and the
   "Reader-only" claims are clarified to note Spot placement needs the read-only Compute
   Recommendations Role.
+- **Removed dead code** surfaced by PSScriptAnalyzer — unused `$allRegions` in
+  `Get-RegionFootprint.ps1` (the region set is recomputed as `$compareRegions` in the
+  comparison pass) and an unused `$subCount` in `Get-SkuCatalogue.ps1`. No behaviour change.
 
 ## [0.1.0] - 2026-06-22
 
@@ -163,4 +173,6 @@ First release.
   guide, troubleshooting/FAQ and sharing/security.
 - **Agent guide** (`AGENTS.md`) describing how to drive the toolkit safely and read-only.
 
+[Unreleased]: https://github.com/microsoft/capacity-toolkit/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/microsoft/capacity-toolkit/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/microsoft/capacity-toolkit/releases/tag/v0.1.0
